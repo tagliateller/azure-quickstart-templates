@@ -20,7 +20,7 @@
   "masterCount": {
     "value": 1
   },
-  "agentVMSize" : {
+  "nodeVMSize" : {
     "value": "Standard_D1"
   },
   "masterVMSize" : {

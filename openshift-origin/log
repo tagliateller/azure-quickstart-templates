@@ -1,624 +1,630 @@
 info:    Executing command group log show
 verbose: Getting group logs
 data:    ----------
-data:    EventId:              41797cb9-0594-461c-b3be-a8087d99a828
+data:    EventId:              aec759a9-03ac-4868-bad3-a131a3accc4b
 data:    Authorization:        
 data:                          action: Microsoft.Resources/subscriptions/
                                        resourcegroups/deployments/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/deployments/
-                                       ExampleDeployment
+                                       OpenShiftGroup/deployments/
+                                       OpenShiftDeployment
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               deployments/ExampleDeployment
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               deployments/OpenShiftDeployment
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:45 GMT+0000 (UTC)
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:47 GMT+0000 (UTC)
 data:    OperationName:        Update deployment
-data:    OperationId:          ffeaee40-5f61-4db6-af8d-12c1d92779c7
+data:    OperationId:          8cd99320-dadf-4180-af01-878f1d158f06
 data:    Status:               Failed
 data:    SubStatus:            
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
 data:    HttpRequest:          []
 data:    Level:                Error
-data:    ResourceGroup:        ExampleResourceGroup
+data:    ResourceGroup:        OpenShiftGroup
 data:    ResourceProvider:     Microsoft Resources
 data:    EventSource:          Administrative
 data:    Properties:           
 data:    ----------
-data:    EventId:              2eed1c5d-7957-49d4-ae8a-774a23f5334d
+data:    EventId:              b02e6a09-9b97-4a6f-8b1e-3b846c1ed7fd
 data:    Authorization:        
-data:                          action: Microsoft.Compute/virtualMachines/write
+data:                          action: Microsoft.Resources/deployments/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Compute/virtualMachines/MyUbuntuVM
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Resources/deployments/createNodes
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Compute/virtualMachines/
-                               MyUbuntuVM
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Resources/deployments/
+                               createNodes
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:43 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Compute/virtualMachines/write
-data:    OperationId:          32a0454b-a0f6-4520-b634-33282737a24a
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:43 GMT+0000 (UTC)
+data:    OperationName:        Microsoft.Resources/deployments/write
+data:    OperationId:          4657cedd-6c13-48f2-af52-da3430b1b03c
 data:    Status:               Failed
 data:    SubStatus:            
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
 data:    HttpRequest:          []
 data:    Level:                Error
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Compute
+data:    ResourceGroup:        OpenShiftGroup
+data:    ResourceProvider:     Microsoft Resources
 data:    EventSource:          Administrative
 data:    Properties:           statusCode:    BadRequest
-                               statusMessage: {"error":{"code":"InvalidParameter
-                               ","target":"
-                               adminPassword","message":"The supplied password
-                               must be
-                               between 6-72 characters long and must satisfy at
-                               least 3
-                               of password complexity requirements from the
-                               following
-                               : \r\n1) Contains an uppercase character\r\n2)
-                               Contains
-                               a lowercase character\r\n3) Contains a numeric
-                               digit\r\
-                               n4) Contains a special character."}}
+                               statusMessage: {"error":{"code":"InvalidTemplate
+                               ","message":"Unable to
+                               process template language expressions for
+                               resource '/
+                               subscriptions/f9ba1f95-5564-4aca-a2fd-
+                               d15b6f0175f9/
+                               resourceGroups/OpenShiftGroup/providers/Microsoft
+                               .
+                               Resources/deployments/createNodes' at line '1'
+                               and
+                               column '5541'. 'The template variable
+                               '
+                               customScriptLocation' is not valid.'"}}
                                
 data:    ----------
-data:    EventId:              79f7198c-82cd-4b3c-9b07-c9b1173b07f1
+data:    EventId:              83de75c4-52e2-4ec4-8c5a-024caa398927
 data:    Authorization:        
-data:                          action: Microsoft.Compute/virtualMachines/write
+data:                          action: Microsoft.Network/virtualNetworks/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Compute/virtualMachines/MyUbuntuVM
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Network/virtualNetworks/VNET
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Compute/virtualMachines/
-                               MyUbuntuVM
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Network/virtualNetworks/VNET
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:43 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Compute/virtualMachines/write
-data:    OperationId:          588ed92a-7610-46b8-9597-9548888b40d4
-data:    Status:               Failed
-data:    SubStatus:            Bad Request (HTTP Status Code: 400)
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: a09c2c3a-a571-4975-9c70-
-                               1ca302d62f05
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
-                               
-data:    Level:                Error
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Compute
-data:    EventSource:          Administrative
-data:    Properties:           statusCode:       BadRequest
-                               serviceRequestId: c943a6d1-6c95-4af0-bd65-
-                               de38f1d7f0e9
-                               statusMessage:    {"error":{"code":"
-                               InvalidParameter","target
-                               ":"
-                               adminPassword","message":"The supplied password
-                               must
-                               be between 6-72 characters long and must satisfy
-                               at
-                               least 3 of password complexity requirements from
-                               the
-                               following: \r\n1) Contains an uppercase character
-                               \r\
-                               n2) Contains a lowercase character\r\n3) Contains
-                               a
-                               numeric digit\r\n4) Contains a special character
-                               ."}}
-                               
-data:    ----------
-data:    EventId:              509319fd-8097-4b9a-abeb-d0097debcc58
-data:    Authorization:        
-data:                          action: Microsoft.Compute/virtualMachines/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Compute/virtualMachines/MyUbuntuVM
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Compute/virtualMachines/
-                               MyUbuntuVM
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:42 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Compute/virtualMachines/write
-data:    OperationId:          588ed92a-7610-46b8-9597-9548888b40d4
-data:    Status:               Started
-data:    SubStatus:            
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: a09c2c3a-a571-4975-9c70-
-                               1ca302d62f05
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
-                               
-data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Compute
-data:    EventSource:          Administrative
-data:    Properties:           
-data:    ----------
-data:    EventId:              9fd18300-8150-4066-ae6e-b8aeff684c8d
-data:    Authorization:        
-data:                          action: Microsoft.Network/networkInterfaces/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Network/networkInterfaces/myVMNic
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Network/networkInterfaces/
-                               myVMNic
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:41 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Network/networkInterfaces/write
-data:    OperationId:          340fc79c-a3e6-4209-a0ea-c5b0bfac0c89
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:28 GMT+0000 (UTC)
+data:    OperationName:        Microsoft.Network/virtualNetworks/write
+data:    OperationId:          3d34ead3-86e5-4984-b4a4-95a9f425c32d
 data:    Status:               Succeeded
 data:    SubStatus:            Created (HTTP Status Code: 201)
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
-data:    HttpRequest:          clientRequestId: cbbdedc1-2347-412c-9955-
-                               38479c84aeaa
+data:    HttpRequest:          clientRequestId: 78477140-d640-4590-a34d-
+                               93288af791ec
                                clientIpAddress: 52.23.183.26
                                method:          PUT
                                
 data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
+data:    ResourceGroup:        OpenShiftGroup
 data:    ResourceProvider:     Microsoft.Network
 data:    EventSource:          Administrative
 data:    Properties:           statusCode:       Created
-                               serviceRequestId: 99426dfe-944a-4cd6-b3a7-
-                               bc45e1851701
-                               responseBody:     {"name":"myVMNic","id":"/
+                               serviceRequestId: 2e6c1b0d-24b4-42c1-ad1d-
+                               d748e5e7b443
+                               responseBody:     {"name":"VNET","id":"/
                                subscriptions/f9ba1f95-5564
                                -
-                               4aca-a2fd-d15b6f0175f9/resourceGroups
-                               /
-                               ExampleResourceGroup/providers/Microsoft.Network
-                               /
-                               networkInterfaces/myVMNic","etag":"W/\"d822f77f-
-                               f1ae-
-                               4133-ba23-537790263baa\"","type":"Microsoft.
-                               Network/
-                               networkInterfaces","location":"westus","
-                               properties
-                               ":{"provisioningState":"Succeeded","resourceGuid
+                               4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup/
+                               providers/Microsoft.Network/virtualNetworks/VNET
+                               ","
+                               etag":"W/\"2dd354e2-8367-419c-b928-c7432fe4f1ec
+                               \"","
+                               type":"Microsoft.Network/virtualNetworks","
+                               location
+                               ":"westus","properties":{"provisioningState
                                ":"
-                               016ebcb6-54cb-41f6-af56-6449c74fdf98
+                               Updating","resourceGuid":"0e08d77b-1d00-4e4f-a499
+                               -
+                               d470cb6831b1","addressSpace":{"addressPrefixes
+                               ":["10.
+                               0.0.0/16"]},"subnets":[{"name":"Subnet","id
+                               ":"/
+                               subscriptions/f9ba1f95-5564-4aca-a2fd-
+                               d15b6f0175f9/
+                               resourceGroups/OpenShiftGroup/providers/Microsoft
+                               .
+                               Network/virtualNetworks/VNET/subnets/Subnet","
+                               etag":"
+                               W/\"2dd354e2-8367-419c-b928-c7432fe4f1ec
+                               \"","
+                               properties":{"provisioningState":"Updating
                                ","
-                               ipConfigurations":[{"name":"ipconfig1","id
-                               ":"/
-                               subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/
-                               resourceGroups/ExampleResourceGroup/providers
-                               /
-                               Microsoft.Network/networkInterfaces/myVMNic
-                               /
-                               ipConfigurations/ipconfig1","etag":"W/\"d822f77f-
-                               f1ae
-                               -4133-ba23-537790263baa\"","properties
-                               ":{"
-                               provisioningState":"Succeeded","privateIPAddress
-                               ":"10
-                               .0.0.4","privateIPAllocationMethod":"Dynamic
-                               ","
-                               publicIPAddress":{"id":"/subscriptions/f9ba1f95-
-                               5564-
-                               4aca-a2fd-d15b6f0175f9/resourceGroups
-                               /
-                               ExampleResourceGroup/providers/Microsoft.Network
-                               /
-                               publicIPAddresses/myPublicIP"},"subnet":{"id
-                               ":"/
-                               subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/
-                               resourceGroups/ExampleResourceGroup/providers
-                               /
-                               Microsoft.Network/virtualNetworks/MyVNET/subnets
-                               /
-                               Subnet"}}}],"dnsSettings":{"dnsServers
-                               ":[],"
-                               appliedDnsServers":[]},"enableIPForwarding":false
-                               }}
+                               addressPrefix":"10.0.0.0/18","
+                               networkSecurityGroup
                                
-data:    ----------
-data:    EventId:              420dbd13-55b0-41ef-b986-6f30aa12a6bd
-data:    Authorization:        
-data:                          action: Microsoft.Network/networkInterfaces/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Network/networkInterfaces/myVMNic
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Network/networkInterfaces/
-                               myVMNic
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:39 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Network/networkInterfaces/write
-data:    OperationId:          340fc79c-a3e6-4209-a0ea-c5b0bfac0c89
-data:    Status:               Started
-data:    SubStatus:            
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: cbbdedc1-2347-412c-9955-
-                               38479c84aeaa
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
+                               ":{"id":"/subscriptions/f9ba1f95-5564-4aca-a2fd
+                               -
+                               d15b6f0175f9/resourceGroups/OpenShiftGroup/
+                               providers/
+                               Microsoft.Network/networkSecurityGroups/node-nsg
                                
-data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Network
-data:    EventSource:          Administrative
-data:    Properties:           requestbody: {"location":"West US","properties
-                               ":{"ipConfigurations":[{"
-                               name":"ipconfig1","properties":{"
-                               privateIPAllocationMethod
-                               
-                               ":"Dynamic","publicIPAddress":{"id":"/
-                               subscriptions/
-                               f9ba1f95-5564-4aca-a2fd-d15b6f0175f9/
-                               resourceGroups/
-                               ExampleResourceGroup/providers/Microsoft.Network
-                               /
-                               publicIPAddresses/myPublicIP"},"subnet":{"id
-                               ":"/
-                               subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/
-                               resourceGroups/ExampleResourceGroup/providers/
-                               Microsoft.
-                               Network/virtualNetworks/MyVNET/subnets/Subnet
                                "}}}]}}
                                
 data:    ----------
-data:    EventId:              48be0a7f-901b-4593-a319-464a8a261e0b
-data:    Authorization:        
-data:                          action: Microsoft.Network/publicIPAddresses/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Network/publicIPAddresses/myPublicIP
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Network/publicIPAddresses/
-                               myPublicIP
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:24 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Network/publicIPAddresses/write
-data:    OperationId:          c55b2f20-430f-409b-8aa3-1f02bed7ea98
-data:    Status:               Succeeded
-data:    SubStatus:            Created (HTTP Status Code: 201)
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: 9cf31158-42c9-4db3-88de-
-                               bdb4934c30fc
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
-                               
-data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Network
-data:    EventSource:          Administrative
-data:    Properties:           statusCode:       Created
-                               serviceRequestId: dbe43760-82a3-44a1-bdbf-
-                               7b024e869db8
-                               responseBody:     {"name":"myPublicIP","id":"/
-                               subscriptions/f9ba1f95
-                               -
-                               5564-4aca-a2fd-d15b6f0175f9/resourceGroups
-                               /
-                               ExampleResourceGroup/providers/Microsoft.Network
-                               /
-                               publicIPAddresses/myPublicIP","etag":"W/\"
-                               e6d7cdb0-
-                               9cc0-4985-bf0c-c276f0fe40a3\"","type":"Microsoft
-                               .
-                               Network/publicIPAddresses","location":"westus
-                               ","
-                               properties":{"provisioningState":"Updating
-                               ","
-                               resourceGuid":"beb0a5b1-0e50-40d5-8d6c-
-                               43276d70a4df
-                               ","publicIPAllocationMethod":"Dynamic
-                               ","
-                               idleTimeoutInMinutes":4,"dnsSettings
-                               ":{"
-                               domainNameLabel":"rb-meissen-berlin-linux","fqdn
-                               ":"rb
-                               -meissen-berlin-linux.westus.cloudapp.azure.com
-                               "}}}
-                               
-data:    ----------
-data:    EventId:              4c25ee90-e05f-4b11-8571-5967e2b076cd
-data:    Authorization:        
-data:                          action: Microsoft.Network/publicIPAddresses/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Network/publicIPAddresses/myPublicIP
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Network/publicIPAddresses/
-                               myPublicIP
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:22 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Network/publicIPAddresses/write
-data:    OperationId:          c55b2f20-430f-409b-8aa3-1f02bed7ea98
-data:    Status:               Started
-data:    SubStatus:            
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: 9cf31158-42c9-4db3-88de-
-                               bdb4934c30fc
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
-                               
-data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Network
-data:    EventSource:          Administrative
-data:    Properties:           requestbody: {"location":"West US","properties
-                               ":{"
-                               publicIPAllocationMethod":"Dynamic","dnsSettings
-                               ":{"
-                               domainNameLabel":"rb-meissen-berlin-linux"}}}
-                               
-data:    ----------
-data:    EventId:              e560a524-0e57-4c2a-aa52-0ab30bd8eef1
-data:    Authorization:        
-data:                          action: Microsoft.Storage/storageAccounts/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Storage/storageAccounts/
-                                       uniqueStorageAccount
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Storage/storageAccounts/
-                               uniqueStorageAccount
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:21 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Storage/storageAccounts/write
-data:    OperationId:          b26c67e7-c83f-495d-9724-68beb1bfb8e6
-data:    Status:               Succeeded
-data:    SubStatus:            OK (HTTP Status Code: 200)
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: 51f0725c-09d9-4b9f-89bc-
-                               a9d4c1dcaf18
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
-                               
-data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Storage
-data:    EventSource:          Administrative
-data:    Properties:           statusCode:       OK
-                               serviceRequestId: 50e48ab9-797f-40a2-b1d6-
-                               8f0908cc0441
-                               
-data:    ----------
-data:    EventId:              2dbb2634-0283-4e10-8d7c-e918af3194c5
+data:    EventId:              91861dfa-865b-4b6e-a600-eb614e542eba
 data:    Authorization:        
 data:                          action: Microsoft.Network/virtualNetworks/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Network/virtualNetworks/MyVNET
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Network/virtualNetworks/VNET
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Network/virtualNetworks/
-                               MyVNET
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Network/virtualNetworks/VNET
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:21 GMT+0000 (UTC)
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:25 GMT+0000 (UTC)
 data:    OperationName:        Microsoft.Network/virtualNetworks/write
-data:    OperationId:          d482da67-1ddd-459b-a279-66fae2a2d4d8
-data:    Status:               Succeeded
-data:    SubStatus:            OK (HTTP Status Code: 200)
+data:    OperationId:          3d34ead3-86e5-4984-b4a4-95a9f425c32d
+data:    Status:               Started
+data:    SubStatus:            
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
-data:    HttpRequest:          clientRequestId: ac27b34a-7510-454d-818c-
-                               d3acf95fa193
+data:    HttpRequest:          clientRequestId: 78477140-d640-4590-a34d-
+                               93288af791ec
                                clientIpAddress: 52.23.183.26
                                method:          PUT
                                
 data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
+data:    ResourceGroup:        OpenShiftGroup
 data:    ResourceProvider:     Microsoft.Network
 data:    EventSource:          Administrative
-data:    Properties:           statusCode:       OK
-                               serviceRequestId: 0df2c0a2-77b1-403e-8a41-
-                               158b05f3f1b9
-                               responseBody:     {"name":"MyVNET","id":"/
-                               subscriptions/f9ba1f95-5564
-                               -
-                               4aca-a2fd-d15b6f0175f9/resourceGroups
-                               /
-                               ExampleResourceGroup/providers/Microsoft.Network
-                               /
-                               virtualNetworks/MyVNET","etag":"W/\"4dda2af7-1a9e
-                               -
-                               4544-87e5-110635820c27\"","type":"Microsoft.
-                               Network/
-                               virtualNetworks","location":"westus","properties
-                               ":{"
-                               provisioningState":"Succeeded","resourceGuid
-                               ":"
-                               6ea161d9-3a1b-4cb9-9e05-d70ebfc648b2","
-                               addressSpace
-                               ":{"addressPrefixes":["10.0.0.0/16"]},"subnets
-                               ":[{"
-                               name":"Subnet","id":"/subscriptions/f9ba1f95-5564
-                               -
-                               4aca-a2fd-d15b6f0175f9/resourceGroups
-                               /
-                               ExampleResourceGroup/providers/Microsoft.Network
-                               /
-                               virtualNetworks/MyVNET/subnets/Subnet","etag":"W
-                               /\"
-                               4dda2af7-1a9e-4544-87e5-110635820c27\"","
-                               properties
-                               ":{"provisioningState":"Succeeded","addressPrefix
-                               ":"
-                               10.0.0.0/24"}}]}}
+data:    Properties:           requestbody: {"location":"westus","properties":{"
+                               addressSpace":{"
+                               addressPrefixes":["10.0.0.0/16"]},"subnets":[{"
+                               name":"
+                               Subnet","properties":{"addressPrefix":"10.0.0.0/
+                               18","
+                               networkSecurityGroup":{"id":"/subscriptions/
+                               f9ba1f95-5564-
+                               4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup/
+                               providers/Microsoft.Network/networkSecurityGroups
+                               /node-nsg
+                               "}}}]}}
                                
 data:    ----------
-data:    EventId:              b57e2ec1-d097-4011-aea4-06ebd15d45db
+data:    EventId:              a0ef7f38-4ff9-4ce9-8740-47e43da765c7
+data:    Authorization:        
+data:                          action: Microsoft.Network/networkSecurityGroups/
+                                       write
+data:                          role:   Subscription Admin
+data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                                       d15b6f0175f9/resourcegroups/
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Network/networkSecurityGroups/node-nsg
+data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Network/networkSecurityGroups
+                               /node-nsg
+data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:12 GMT+0000 (UTC)
+data:    OperationName:        Microsoft.Network/networkSecurityGroups/write
+data:    OperationId:          a1387502-c526-4a01-a1d0-08e7e32a0968
+data:    Status:               Succeeded
+data:    SubStatus:            Created (HTTP Status Code: 201)
+data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
+data:    Description:          
+data:    HttpRequest:          clientRequestId: 9101f1d6-a320-4030-8b54-
+                               56e572073f81
+                               clientIpAddress: 52.23.183.26
+                               method:          PUT
+                               
+data:    Level:                Informational
+data:    ResourceGroup:        OpenShiftGroup
+data:    ResourceProvider:     Microsoft.Network
+data:    EventSource:          Administrative
+data:    Properties:           statusCode:       Created
+                               serviceRequestId: aaa346bc-2ce3-44b4-9c15-
+                               4b000d243c6a
+                               responseBody:     {"name":"node-nsg","id":"/
+                               subscriptions/f9ba1f95-5564
+                               
+                               -4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup
+                               /providers/Microsoft.Network/
+                               networkSecurityGroups
+                               /
+                               node-nsg","etag":"W/\"95b04d0c-1b57-458e-a6f4
+                               -
+                               e8b3f8051f5c\"","type":"Microsoft.Network
+                               /
+                               networkSecurityGroups","location":"westus
+                               ","
+                               properties":{"provisioningState":"Updating
+                               ","
+                               resourceGuid":"2d2d85cd-8a60-4efb-aa15-
+                               8d90cdb00da0
+                               ","securityRules":[{"name":"ssh","id":"/
+                               subscriptions
+                               /f9ba1f95-5564-4aca-a2fd-d15b6f0175f9/
+                               resourceGroups/
+                               OpenShiftGroup/providers/Microsoft.Network
+                               /
+                               networkSecurityGroups/node-nsg/securityRules/ssh
+                               ","
+                               etag":"W/\"95b04d0c-1b57-458e-a6f4-e8b3f8051f5c
+                               \"","
+                               properties":{"provisioningState":"Updating
+                               ","
+                               description":"SSH","protocol":"Tcp","
+                               sourcePortRange
+                               
+                               ":"*","destinationPortRange":"22
+                               ","
+                               sourceAddressPrefix":"*","
+                               destinationAddressPrefix
+                               
+                               ":"*","access":"Allow","priority":200,"direction
+                               ":"
+                               Inbound"}}],"defaultSecurityRules":[{"name
+                               ":"
+                               AllowVnetInBound","id":"/subscriptions/f9ba1f95-
+                               5564-
+                               4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup/
+                               providers/Microsoft.Network/networkSecurityGroups
+                               /
+                               node-nsg/defaultSecurityRules/AllowVnetInBound","
+                               etag
+                               ":"W/\"95b04d0c-1b57-458e-a6f4-e8b3f8051f5c
+                               \"","
+                               properties":{"provisioningState":"Updating
+                               ","
+                               description":"Allow inbound traffic from all VMs
+                               in
+                               VNET","protocol":"*","sourcePortRange
+                               ":"*","
+                               destinationPortRange":"*","sourceAddressPrefix
+                               ":"
+                               VirtualNetwork","destinationAddressPrefix
+                               ":"
+                               VirtualNetwork","access":"Allow","priority":65000
+                               ,"
+                               direction":"Inbound"}},{"name
+                               ":"
+                               AllowAzureLoadBalancerInBound","id":"/
+                               subscriptions/
+                               f9ba1f95-5564-4aca-a2fd-d15b6f0175f9/
+                               resourceGroups/
+                               OpenShiftGroup/providers/Microsoft.Network
+                               /
+                               networkSecurityGroups/node-nsg/
+                               defaultSecurityRules/
+                               AllowAzureLoadBalancerInBound","etag":"W/\"
+                               95b04d0c-
+                               1b57-458e-a6f4-e8b3f8051f5c\"","properties
+                               ":{"
+                               provisioningState":"Updating","description":"
+                               Allow
+                               inbound traffic from azure load balancer","
+                               protocol
+                               ":"*","sourcePortRange":"*","destinationPortRange
+                               
+                               ":"*","sourceAddressPrefix":"AzureLoadBalancer
+                               ","
+                               destinationAddressPrefix":"*","access":"Allow
+                               ","
+                               priority":65001,"direction":"Inbound"}},{"name
+                               ":"
+                               DenyAllInBound","id":"/subscriptions/f9ba1f95-
+                               5564-
+                               4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup/
+                               providers/Microsoft.Network/networkSecurityGroups
+                               /
+                               node-nsg/defaultSecurityRules/DenyAllInBound","
+                               etag
+                               ":"W/\"95b04d0c-1b57-458e-a6f4-e8b3f8051f5c
+                               \"","
+                               properties":{"provisioningState":"Updating
+                               ","
+                               description":"Deny all inbound traffic","protocol
+                               
+                               ":"*","sourcePortRange":"*","destinationPortRange
+                               
+                               ":"*","sourceAddressPrefix
+                               ":"*","
+                               destinationAddressPrefix":"*","access":"Deny
+                               ","
+                               priority":65500,"direction":"Inbound"}},{"name
+                               ":"
+                               AllowVnetOutBound","id":"/subscriptions/f9ba1f95-
+                               5564
+                               -4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup
+                               /providers/Microsoft.Network/
+                               networkSecurityGroups
+                               /
+                               node-nsg/defaultSecurityRules/AllowVnetOutBound
+                               ","
+                               etag":"W/\"95b04d0c-1b57-458e-a6f4-e8b3f8051f5c
+                               \"","
+                               properties":{"provisioningState":"Updating
+                               ","
+                               description":"Allow outbound traffic from all VMs
+                               to
+                               all VMs in VNET","protocol":"*","sourcePortRange
+                               
+                               ":"*","destinationPortRange":"*","
+                               sourceAddressPrefix
+                               
+                               ":"VirtualNetwork","destinationAddressPrefix
+                               ":"
+                               VirtualNetwork","access":"Allow","priority":65000
+                               ,"
+                               direction":"Outbound"}},{"name
+                               ":"
+                               AllowInternetOutBound","id":"/subscriptions/
+                               f9ba1f95-
+                               5564-4aca-a2fd-d15b6f0175f9/resourceGroups
+                               /
+                               OpenShiftGroup/providers/Microsoft.Network
+                               /
+                               networkSecurityGroups/node-nsg/
+                               defaultSecurityRules/
+                               AllowInternetOutBound","etag":"W/\"95b04d0c-1b57-
+                               458e
+                               -a6f4-e8b3f8051f5c\"","properties
+                               ":{"
+                               provisioningState":"Updating","description":"
+                               Allow
+                               outbound traffic from all VMs to Internet","
+                               protocol
+                               ":"*","sourcePortRange":"*","destinationPortRange
+                               
+                               ":"*","sourceAddressPrefix
+                               ":"*","
+                               destinationAddressPrefix":"Internet","access":"
+                               Allow
+                               ","priority":65001,"direction":"Outbound"}},{"
+                               name":"
+                               DenyAllOutBound","id":"/subscriptions/f9ba1f95-
+                               5564-
+                               4aca-a2fd-d15b6f0175f9/resourceGroups/
+                               OpenShiftGroup/
+                               providers/Microsoft.Network/networkSecurityGroups
+                               /
+                               node-nsg/defaultSecurityRules/DenyAllOutBound","
+                               etag
+                               ":"W/\"95b04d0c-1b57-458e-a6f4-e8b3f8051f5c
+                               \"","
+                               properties":{"provisioningState":"Updating
+                               ","
+                               description":"Deny all outbound traffic","
+                               protocol
+                               ":"*","sourcePortRange":"*","destinationPortRange
+                               
+                               ":"*","sourceAddressPrefix
+                               ":"*","
+                               destinationAddressPrefix":"*","access":"Deny
+                               ","
+                               priority":65500,"direction":"Outbound"}}]}}
+                               
+data:    ----------
+data:    EventId:              cdb81f2b-f31c-4dea-aa37-fb136d490c99
 data:    Authorization:        
 data:                          action: Microsoft.Storage/storageAccounts/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Storage/storageAccounts/
-                                       uniqueStorageAccount
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Storage/storageAccounts/openshift-origin0
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
                                providers/Microsoft.Storage/storageAccounts/
-                               uniqueStorageAccount
+                               openshift-origin0
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:20 GMT+0000 (UTC)
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:10 GMT+0000 (UTC)
 data:    OperationName:        Microsoft.Storage/storageAccounts/write
-data:    OperationId:          b26c67e7-c83f-495d-9724-68beb1bfb8e6
+data:    OperationId:          ef368399-0559-4155-9d89-5ab4fe2370ab
+data:    Status:               Failed
+data:    SubStatus:            
+data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
+data:    Description:          
+data:    HttpRequest:          []
+data:    Level:                Error
+data:    ResourceGroup:        OpenShiftGroup
+data:    ResourceProvider:     Microsoft.Storage
+data:    EventSource:          Administrative
+data:    Properties:           statusCode:    BadRequest
+                               statusMessage: {"error":{"code":"
+                               AccountNameInvalid","message
+                               ":"
+                               openshift-origin0 is not a valid storage account
+                               name.
+                               Storage account name must be between 3 and 24
+                               characters
+                               in length and use numbers and lower-case letters
+                               only
+                               ."}}
+                               
+data:    ----------
+data:    EventId:              7966ddd6-df07-4203-be6e-e68d9da81f1f
+data:    Authorization:        
+data:                          action: Microsoft.Storage/storageAccounts/write
+data:                          role:   Subscription Admin
+data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                                       d15b6f0175f9/resourcegroups/
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Storage/storageAccounts/openshift-origin0
+data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Storage/storageAccounts/
+                               openshift-origin0
+data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:10 GMT+0000 (UTC)
+data:    OperationName:        Microsoft.Storage/storageAccounts/write
+data:    OperationId:          0033f13e-ab1d-4762-94b6-0ef0bb253298
+data:    Status:               Failed
+data:    SubStatus:            Bad Request (HTTP Status Code: 400)
+data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
+data:    Description:          
+data:    HttpRequest:          clientRequestId: c534fb96-db75-4f9f-9391-
+                               ab0613cb8dc2
+                               clientIpAddress: 52.23.183.26
+                               method:          PUT
+                               
+data:    Level:                Error
+data:    ResourceGroup:        OpenShiftGroup
+data:    ResourceProvider:     Microsoft.Storage
+data:    EventSource:          Administrative
+data:    Properties:           statusCode:       BadRequest
+                               serviceRequestId: 3cf3f374-83d7-4d73-9281-
+                               2c568f4a0890
+                               statusMessage:    {"error":{"code":"
+                               AccountNameInvalid","message
+                               ":"
+                               openshift-origin0 is not a valid storage account
+                               name
+                               . Storage account name must be between 3 and 24
+                               
+                               characters in length and use numbers and lower-
+                               case
+                               letters only."}}
+                               
+data:    ----------
+data:    EventId:              c4be4594-908d-42b8-a883-574b6ec7f485
+data:    Authorization:        
+data:                          action: Microsoft.Network/networkSecurityGroups/
+                                       write
+data:                          role:   Subscription Admin
+data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                                       d15b6f0175f9/resourcegroups/
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Network/networkSecurityGroups/node-nsg
+data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Network/networkSecurityGroups
+                               /node-nsg
+data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:09 GMT+0000 (UTC)
+data:    OperationName:        Microsoft.Network/networkSecurityGroups/write
+data:    OperationId:          a1387502-c526-4a01-a1d0-08e7e32a0968
 data:    Status:               Started
 data:    SubStatus:            
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
-data:    HttpRequest:          clientRequestId: 51f0725c-09d9-4b9f-89bc-
-                               a9d4c1dcaf18
+data:    HttpRequest:          clientRequestId: 9101f1d6-a320-4030-8b54-
+                               56e572073f81
                                clientIpAddress: 52.23.183.26
                                method:          PUT
                                
 data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
+data:    ResourceGroup:        OpenShiftGroup
+data:    ResourceProvider:     Microsoft.Network
+data:    EventSource:          Administrative
+data:    Properties:           requestbody: {"location":"westus","properties":{"
+                               securityRules":[{"name
+                               ":"ssh","properties":{"description":"SSH","
+                               protocol":"Tcp
+                               ","sourcePortRange":"*","destinationPortRange":"
+                               22","
+                               sourceAddressPrefix":"*","
+                               destinationAddressPrefix
+                               ":"*","
+                               access":"Allow","priority":200,"direction":"
+                               Inbound"}}]}}
+                               
+data:    ----------
+data:    EventId:              4ad9a3bd-a233-4162-9023-da667a989e96
+data:    Authorization:        
+data:                          action: Microsoft.Storage/storageAccounts/write
+data:                          role:   Subscription Admin
+data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                                       d15b6f0175f9/resourcegroups/
+                                       OpenShiftGroup/providers/Microsoft.
+                                       Storage/storageAccounts/openshift-origin0
+data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               providers/Microsoft.Storage/storageAccounts/
+                               openshift-origin0
+data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:08 GMT+0000 (UTC)
+data:    OperationName:        Microsoft.Storage/storageAccounts/write
+data:    OperationId:          0033f13e-ab1d-4762-94b6-0ef0bb253298
+data:    Status:               Started
+data:    SubStatus:            
+data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
+data:    Description:          
+data:    HttpRequest:          clientRequestId: c534fb96-db75-4f9f-9391-
+                               ab0613cb8dc2
+                               clientIpAddress: 52.23.183.26
+                               method:          PUT
+                               
+data:    Level:                Informational
+data:    ResourceGroup:        OpenShiftGroup
 data:    ResourceProvider:     Microsoft.Storage
 data:    EventSource:          Administrative
 data:    Properties:           
 data:    ----------
-data:    EventId:              5c7711bf-c5d9-4d8c-8b71-674cff9b5db3
-data:    Authorization:        
-data:                          action: Microsoft.Network/virtualNetworks/write
-data:                          role:   Subscription Admin
-data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                                       d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/providers/Microsoft.
-                                       Network/virtualNetworks/MyVNET
-data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               providers/Microsoft.Network/virtualNetworks/
-                               MyVNET
-data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:20 GMT+0000 (UTC)
-data:    OperationName:        Microsoft.Network/virtualNetworks/write
-data:    OperationId:          d482da67-1ddd-459b-a279-66fae2a2d4d8
-data:    Status:               Started
-data:    SubStatus:            
-data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
-data:    Description:          
-data:    HttpRequest:          clientRequestId: ac27b34a-7510-454d-818c-
-                               d3acf95fa193
-                               clientIpAddress: 52.23.183.26
-                               method:          PUT
-                               
-data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
-data:    ResourceProvider:     Microsoft.Network
-data:    EventSource:          Administrative
-data:    Properties:           requestbody: {"location":"West US","properties
-                               ":{"addressSpace":{"
-                               addressPrefixes":["10.0.0.0/16"]},"subnets":[{"
-                               name":"
-                               Subnet","properties":{"addressPrefix":"10.0.0.0/
-                               24"}}]}}
-                               
-data:    ----------
-data:    EventId:              c97b028d-7177-4cf0-aa4c-50b9d4e23543
+data:    EventId:              ac5a5ca9-6e24-4d27-a4a5-ca5181a2d7df
 data:    Authorization:        
 data:                          action: Microsoft.Resources/subscriptions/
                                        resourcegroups/deployments/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/deployments/
-                                       ExampleDeployment
+                                       OpenShiftGroup/deployments/
+                                       OpenShiftDeployment
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               deployments/ExampleDeployment
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               deployments/OpenShiftDeployment
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:19 GMT+0000 (UTC)
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:06 GMT+0000 (UTC)
 data:    OperationName:        Update deployment
-data:    OperationId:          50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    OperationId:          3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Status:               Succeeded
-data:    SubStatus:            OK (HTTP Status Code: 200)
+data:    SubStatus:            Created (HTTP Status Code: 201)
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
 data:    HttpRequest:          clientIpAddress: 52.23.183.26
                                method:          PUT
                                
 data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
+data:    ResourceGroup:        OpenShiftGroup
 data:    ResourceProvider:     Microsoft Resources
 data:    EventSource:          Administrative
-data:    Properties:           statusCode:       OK
+data:    Properties:           statusCode:       Created
                                serviceRequestId: 
                                
 data:    ----------
-data:    EventId:              a6a02db1-050b-48f5-a98f-46a18cae4cf9
+data:    EventId:              2383e996-908e-4fb4-bee3-9335a634be30
 data:    Authorization:        
 data:                          action: Microsoft.Resources/subscriptions/
                                        resourcegroups/deployments/write
 data:                          role:   Subscription Admin
 data:                          scope:  /subscriptions/f9ba1f95-5564-4aca-a2fd-
                                        d15b6f0175f9/resourcegroups/
-                                       ExampleResourceGroup/deployments/
-                                       ExampleDeployment
+                                       OpenShiftGroup/deployments/
+                                       OpenShiftDeployment
 data:    ResourceUri:          /subscriptions/f9ba1f95-5564-4aca-a2fd-
-                               d15b6f0175f9/resourcegroups/ExampleResourceGroup/
-                               deployments/ExampleDeployment
+                               d15b6f0175f9/resourcegroups/OpenShiftGroup/
+                               deployments/OpenShiftDeployment
 data:    SubscriptionId:       f9ba1f95-5564-4aca-a2fd-d15b6f0175f9
-data:    EventTimestamp (UTC): Fri Oct 02 2015 08:30:17 GMT+0000 (UTC)
+data:    EventTimestamp (UTC): Fri Oct 02 2015 11:42:04 GMT+0000 (UTC)
 data:    OperationName:        Update deployment
-data:    OperationId:          50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    OperationId:          3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Status:               Started
 data:    SubStatus:            
 data:    Caller:               robertbloy@itdzef1.onmicrosoft.com
-data:    CorrelationId:        50e48ab9-797f-40a2-b1d6-8f0908cc0441
+data:    CorrelationId:        3cf3f374-83d7-4d73-9281-2c568f4a0890
 data:    Description:          
 data:    HttpRequest:          clientIpAddress: 52.23.183.26
                                method:          PUT
                                
 data:    Level:                Informational
-data:    ResourceGroup:        ExampleResourceGroup
+data:    ResourceGroup:        OpenShiftGroup
 data:    ResourceProvider:     Microsoft Resources
 data:    EventSource:          Administrative
 data:    Properties:           
