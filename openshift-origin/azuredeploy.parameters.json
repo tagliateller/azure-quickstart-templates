@@ -11,11 +11,14 @@
     "adminPassword": {
       "value": "frisch!2Auf"
     },
-    "dnsNameForPublicIP": {
-      "value": "rb-meissen-berlin-linux"
+    "dnsNameForMaster": {
+      "value": "demov3-master"
     },
-    "ubuntuOSVersion": {
-      "value": "14.04.2-LTS"
+    "dnsNameForNode": {
+      "value": "demov3-node"
+    },
+    "centosOSVersion": {
+      "value": "7.1.20150731"
     }
   }
 }
