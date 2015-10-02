@@ -20,7 +20,13 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "dnsNameForPublicIP": {
+    "dnsNameForMaster": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "dnsNameForNode": {
       "type": "string",
       "metadata": {
         "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
@@ -47,7 +53,8 @@
     "subnetName": "Subnet",
     "subnetPrefix": "10.0.0.0/24",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "myPublicIP",
+    "publicIPAddressMasterName": "public-ip-master",
+    "publicIPAddressNodeName": "public-ip-node",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "Standard_D1",
@@ -68,12 +75,36 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressName')]",
+      "name": "[variables('publicIPAddressMasterName')]",
       "location": "[variables('location')]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+          "domainNameLabel": "[parameters('dnsNameForMaster')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressNodeName')]-1",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForNode')]-1"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressNodeName')]-2",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForNode')]-2"
         }
       }
     },
@@ -131,7 +162,7 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameMaster'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -180,7 +211,7 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameNode'),'1')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -210,7 +241,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'),'2')]"
             }
           ]
         },
@@ -229,7 +260,7 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '2')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -259,7 +290,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'),'2')]"
             }
           ]
         },
