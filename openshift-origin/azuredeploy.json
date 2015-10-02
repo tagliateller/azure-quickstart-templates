@@ -2,14 +2,15 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "newStorageAccountName": {
+    "newStorageAccountNamePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+        "description": "Globally Unique DNS Name Prefix for the Storage Account where the Virtual Machine's disks will be placed.  An integer will be appended to the end.  StorageAccounts may contain at most variables('vmsPerStorageAccount')"
       }
     },
     "adminUsername": {
       "type": "string",
+      "defaultValue": "azureuser",
       "metadata": {
         "description": "User name for the Virtual Machine."
       }
@@ -20,99 +21,148 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "dnsNameForMaster": {
+    "dnsNameForMasterPublicIP": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+        "description": "Sets the Domain name label for the container service.  The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address."
       }
     },
-    "dnsNameForNode": {
+    "dnsNameForNodePublicIP": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+        "description": "Sets the Domain name label for the container service.  The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address."
       }
     },
-    "centosOSVersion": {
-      "type": "string",
-      "defaultValue": "7.1.20150731",
+    "nodeCount": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "The number of nodes for the cluster."
+      }
+    },
+    "masterCount": {
+      "type": "int",
+      "defaultValue": 1,
       "allowedValues": [
-        "7.1.20150731" 
+        1,
+        3
       ],
       "metadata": {
-        "description": "The OpenLogic CentOS for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 7.1.20150731"
+        "description": "The number of masters for the cluster."
+      }
+    },
+    "nodeVMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D1",
+      "allowedValues": [
+        "Standard_A1",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D11",
+        "Standard_D12",
+        "Standard_D13",
+        "Standard_D14"
+      ],
+      "metadata": {
+        "description": "The size of the Virtual Machine."
+      }
+    },
+    "masterVMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D1",
+      "allowedValues": [
+        "Standard_A1",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D11",
+        "Standard_D12",
+        "Standard_D13",
+        "Standard_D14"
+      ],
+      "metadata": {
+        "description": "The size of the Virtual Machine for the master."
+      }
+    },
+    "clusterPrefix": {
+      "type": "string",
+      "defaultValue": "demov3",
+      "metadata": {
+        "description": "The prefix to identify the cluster."
+      }
+    },
+    "sshRSAPublicKey": {
+      "type": "string",
+      "defaultValue": "disabled",
+      "metadata": {
+        "description": "Configure all linux machines with the SSH rsa public key string.  Use 'disabled' to not configure access with SSH rsa public key."
       }
     }
   },
   "variables": {
-    "location": "West US",
-    "imagePublisher": "OpenLogic",
-    "imageOffer": "CentOS",
-    "OSDiskName": "osdiskforlinuxsimple",
-    "nicName": "myVMNic",
-    "addressPrefix": "10.0.0.0/16",
-    "subnetName": "Subnet",
-    "subnetPrefix": "10.0.0.0/24",
-    "storageAccountType": "Standard_LRS",
-    "publicIPAddressMasterName": "public-ip-master",
-    "publicIPAddressNodeName": "public-ip-node",
-    "publicIPAddressType": "Dynamic",
-    "vmStorageAccountContainerName": "vhds",
-    "vmSize": "Standard_D1",
-    "virtualNetworkName": "MyVNET",
+    "masterVMNamePrefix": "[concat(parameters('clusterPrefix'),'master')]",
+    "nodeVMNamePrefix": "[concat(parameters('clusterPrefix'),'node')]",
+    "osImagePublisher": "OpenLogic",
+    "osImageOffer": "CentOS",
+    "osImageSKU": "7.1",
+    "osImageVersion": "7.1.20150731",
+    "virtualNetworkName": "VNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
+    "subnetName": "Subnet",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetPrefix": "10.0.0.0/18",
+    "masterFirstAddr": 5,
+    "nodeFirstAddr": 50,
+    "nsgName": "node-nsg",
+    "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]",
+    "storageAccountType": "Standard_GRS"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('newStorageAccountName')]",
+      "name": "[concat(parameters('newStorageAccountNamePrefix'),'0')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[variables('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressMasterName')]",
-      "location": "[variables('location')]",
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
       "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsNameForMaster')]"
-        }
+        "securityRules": [
+          {
+            "name": "ssh",
+            "properties": {
+              "description": "SSH",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 200,
+              "direction": "Inbound"
+            }
+          }
+        ]
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressNodeName')]-1",
-      "location": "[variables('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsNameForNode')]-1"
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressNodeName')]-2",
-      "location": "[variables('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsNameForNode')]-2"
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "location": "[variables('location')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('nsgID')]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -123,32 +173,9 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('nicName')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
-              },
-              "subnet": {
-                "id": "[variables('subnetRef')]"
+              "addressPrefix": "[variables('subnetPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[variables('nsgID')]"
               }
             }
           }
@@ -156,148 +183,129 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "demov3-master",
-      "location": "[variables('location')]",
+      "apiVersion": "2015-01-01",
+      "type": "Microsoft.Resources/deployments",
+      "name": "createMaster",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameMaster'))]"
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountNamePrefix'), '0')]",
+        "[variables('vnetID')]"
       ],
       "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('customScriptLocation'), 'master.json')]",
+          "contentVersion": "1.0.0.0"
         },
-        "osProfile": {
-          "computername": "[variables('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
-            "version": "latest"
+        "parameters": {
+          "newStorageAccountName": {
+            "value": "[concat(parameters('newStorageAccountNamePrefix'), '0')]"
           },
-          "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-             "enabled": "true",
-             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "dnsNameForContainerServicePublicIP": {
+            "value": "[parameters('dnsNameForMasterPublicIP')]"
+          },
+          "masterVMSize": {
+            "value": "[parameters('masterVMSize')]"
+          },
+          "masterCount": {
+            "value": "[parameters('masterCount')]"
+          },
+          "subnetPrefix": {
+            "value": "[variables('subnetPrefix')]"
+          },
+          "subnetRef": {
+            "value": "[variables('subnetRef')]"
+          },
+          "masterFirstAddr": {
+            "value": "[variables('masterFirstAddr')]"
+          },
+          "masterVMNamePrefix": {
+            "value": "[variables('masterVMNamePrefix')]"
+          },
+          "osImagePublisher": {
+            "value": "[variables('osImagePublisher')]"
+          },
+          "osImageOffer": {
+            "value": "[variables('osImageOffer')]"
+          },
+          "osImageSKU": {
+            "value": "[variables('osImageSKU')]"
+          },
+          "osImageVersion": {
+            "value": "[variables('osImageVersion')]"
+          },
+          "sshRSAPublicKey": {
+            "value": "[parameters('sshRSAPublicKey')]"
           }
         }
       }
     },
     {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "demov3-node1",
-      "location": "[variables('location')]",
+      "apiVersion": "2015-01-01",
+      "type": "Microsoft.Resources/deployments",
+      "name": "createNodes",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameNode'),'1')]"
+        "[variables('vnetID')]"
       ],
       "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('customScriptLocation'), 'nodes.json')]",
+          "contentVersion": "1.0.0.0"
         },
-        "osProfile": {
-          "computername": "[variables('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
-            "version": "latest"
+        "parameters": {
+          "newStorageAccountNamePrefix": {
+            "value": "[concat(parameters('newStorageAccountNamePrefix'))]"
           },
-          "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'),'2')]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-             "enabled": "true",
-             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
-          }
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "demov3-node2",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '2')]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
-        },
-        "osProfile": {
-          "computername": "[variables('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
-            "version": "latest"
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
           },
-          "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'),'2')]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-             "enabled": "true",
-             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "nodeVMSize": {
+            "value": "[parameters('nodeVMSize')]"
+          },
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
+          },
+          "masterCount": {
+            "value": "[parameters('nodeCount')]"
+          },
+          "subnetPrefix": {
+            "value": "[variables('subnetPrefix')]"
+          },
+          "subnetRef": {
+            "value": "[variables('subnetRef')]"
+          },
+          "agentFirstAddr": {
+            "value": "[variables('agentFirstAddr')]"
+          },
+          "masterVMNamePrefix": {
+            "value": "[variables('masterVMNamePrefix')]"
+          },
+          "nodeVMNamePrefix": {
+            "value": "[variables('agentVMNamePrefix')]"
+          },
+          "osImagePublisher": {
+            "value": "[variables('osImagePublisher')]"
+          },
+          "osImageOffer": {
+            "value": "[variables('osImageOffer')]"
+          },
+          "osImageSKU" : {
+            "value": "[variables('osImageSKU')]"
+          },
+          "osImageVersion" : {
+            "value": "[variables('osImageVersion')]"
+          },
+          "sshRSAPublicKey": {
+            "value": "[parameters('sshRSAPublicKey')]"
           }
         }
       }
