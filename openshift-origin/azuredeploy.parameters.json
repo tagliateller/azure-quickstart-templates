@@ -1,24 +1,35 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "newStorageAccountName": {
-      "value": "uniqueStorageAccount"
-    },
-    "adminUsername": {
-      "value": "azureadmin"
-    },
-    "adminPassword": {
-      "value": "frisch!2Auf"
-    },
-    "dnsNameForMaster": {
-      "value": "demov3-master"
-    },
-    "dnsNameForNode": {
-      "value": "demov3-node"
-    },
-    "centosOSVersion": {
-      "value": "7.1.20150731"
-    }
+  "newStorageAccountNamePrefix": {
+    "value": "openshift-origin"
+  },
+  "adminUsername": {
+    "value": "azureuser"
+  },
+  "adminPassword": {
+    "value": "berlin1234$"
+  },
+  "dnsNameForMasterPublicIP": {
+    "value": "demov3-master"
+  },
+  "dnsNameForNodePublicIP": {
+    "value": "demov3-node"
+  },
+  "nodeCount": {
+    "value": 2
+  },
+  "masterCount": {
+    "value": 1
+  },
+  "agentVMSize" : {
+    "value": "Standard_D1"
+  },
+  "masterVMSize" : {
+    "value": "Standard_D1"
+  },
+  "clusterPrefix": {
+    "value": "demov3"
+  },
+  "sshRSAPublicKey": {
+    "value": "disabled"
   }
 }
