@@ -6,13 +6,13 @@
       "value": "uniqueStorageAccount"
     },
     "adminUsername": {
-      "value": "userName"
+      "value": "azureadmin"
     },
     "adminPassword": {
-      "value": "password"
+      "value": "frisch!2Auf"
     },
     "dnsNameForPublicIP": {
-      "value": "simplelinux"
+      "value": "rb-meissen-berlin-linux"
     },
     "ubuntuOSVersion": {
       "value": "14.04.2-LTS"
