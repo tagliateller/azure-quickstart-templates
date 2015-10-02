@@ -119,7 +119,8 @@
     "nodeFirstAddr": 50,
     "nsgName": "node-nsg",
     "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]",
-    "storageAccountType": "Standard_GRS"
+    "storageAccountType": "Standard_GRS",
+    "customScriptLocation": "https://github.com/tagliateller/azure-quickstart-templates/openshift-origin"
   },
   "resources": [
     {
