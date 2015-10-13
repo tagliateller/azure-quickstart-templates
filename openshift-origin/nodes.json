@@ -38,6 +38,12 @@
         "description": "The count of nodes"
       }
     },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "The virtual network name"
+      }
+    },
     "subnetPrefix": {
       "type": "string",
       "metadata": {
