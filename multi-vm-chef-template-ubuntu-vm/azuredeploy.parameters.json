@@ -3,55 +3,37 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "newStorageAccountName": {
-      "value": "your storage"
+      "value": "demov3storage"
     },
     "adminUserName": {
-      "value": "admin name"
+      "value": "azureuser"
     },
     "adminPassword": {
-      "value": "admin password"
+      "value": "berlin1234$"
     },
     "vmDnsName": {
-      "value": "unique dns name"
+      "value": "demov3vm"
     },
     "numberOfInstances": {
-      "value": "number of VMs to create"
+      "value": 3
     },
     "availabilitySetName": {
-      "value": "availability set name"
+      "value": "demov3avset"
     },
     "imagePublisher": {
-      "value": "image Publisher"
+      "value": "OpenLogic"
     },
     "imageOffer": {
-      "value": "image Offer"
+      "value": "CentOS"
     },
     "imageSKU": {
-      "value": "image SKU"
+      "value": "7.1"
     },
     "location": {
-      "value": "VM Location"
+      "value": "East US"
     },
     "vmSize": {
-      "value": "VM Size"
-    },
-    "chef_node_name": {
-      "value": "your node name"
-    },
-    "chef_server_url": {
-      "value": "Chef Server url"
-    },
-    "validation_client_name": {
-      "value": "chef validator name"
-    },
-    "runlist": {
-      "value": "recipe[getting-started]"
-    },
-    "autoUpdateClient": {
-      "value": "false"
-    },
-    "validation_key": {
-      "value": "validation key"
+      "value": "Standard_D1"
     }
   }
 }
