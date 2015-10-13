@@ -216,6 +216,9 @@
           "masterCount": {
             "value": "[parameters('masterCount')]"
           },
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
           "subnetPrefix": {
             "value": "[variables('subnetPrefix')]"
           },
@@ -277,6 +280,9 @@
           },
           "masterCount": {
             "value": "[parameters('nodeCount')]"
+          },
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
           },
           "subnetPrefix": {
             "value": "[variables('subnetPrefix')]"
