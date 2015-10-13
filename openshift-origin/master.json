@@ -44,6 +44,12 @@
         "description": "The network subnet"
       }
     },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "The virtual network name"
+      }
+    },
     "subnetRef": {
       "type": "string",
       "metadata": {
@@ -126,8 +132,8 @@
         "count": "[parameters('masterCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', [parameters('dnsNameForContainerServicePublicIP')])]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('dnsNameForContainerServicePublicIP'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -138,17 +144,7 @@
               "privateIPAddress": "[concat(split(parameters('subnetPrefix'),'0/18')[0], copyIndex(parameters('masterFirstAddr')))]",
               "subnet": {
                 "id": "[parameters('subnetRef')]"
-              },
-              "loadBalancerBackendAddressPools": [
-                {
-                  "id": "[concat(variables('nodesLbID'), '/backendAddressPools/', variables('nodesLbBackendPoolName'))]"
-                }
-              ],
-              "loadBalancerInboundNatRules": [
-                {
-                  "id": "[concat(variables('nodesLbID'),'/inboundNatRules/SSH-',parameters('masterVMNamePrefix'),copyIndex(1))]"
-                }
-              ]
+              }
             }
           }
         ]
