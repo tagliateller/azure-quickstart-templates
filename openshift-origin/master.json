@@ -94,15 +94,7 @@
     }
   },
   "variables": {
-    "availabilitySet": "masterAvailabilitySet",
-    "nodesLbName": "nodeslb",
-    "nodesLbID": "[resourceId('Microsoft.Network/loadBalancers',variables('nodesLbName'))]",
-    "nodesLbIPConfigName": "NodesLBFrontEnd",
-    "nodesLbIPConfigID": "[concat(variables('nodesLbID'),'/frontendIPConfigurations/', variables('nodesLbIPConfigName'))]",
-    "nodesLbBackendPoolName": "node-pool",
-    "wgetCommandPrefix": "[concat('wget --tries 20 --retry-connrefused --waitretry=15 -qO- ', parameters('customScriptLocation'), 'configure-mesos-cluster.sh | nohup /bin/bash -s ')]",
-    "wgetCommandPostfix":  " >> /var/log/azure/cluster-bootstrap.log 2>&1 &'",
-    "commandPrefix": "/bin/bash -c '"
+    "availabilitySet": "masterAvailabilitySet"
   },
   "resources": [
     {
@@ -126,96 +118,6 @@
     },
     {
       "apiVersion": "2015-06-15",
-      "name": "[variables('nodesLbName')]",
-      "type": "Microsoft.Network/loadBalancers",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('dnsNameForContainerServicePublicIP'))]"
-      ],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "[variables('nodesLbIPConfigName')]",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('dnsNameForContainerServicePublicIP'))]"
-              }
-            }
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "[variables('nodesLbBackendPoolName')]"
-          }
-        ],
-        "probes": [],
-        "loadBalancingRules": [],
-        "inboundNatRules": [
-          {
-            "name": "[concat('SSH-',parameters('masterVMNamePrefix'), '1')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('nodesLbIPConfigID')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 2211,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[concat('SSH-',parameters('masterVMNamePrefix'), '2')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('nodesLbIPConfigID')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 2212,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[concat('SSH-',parameters('masterVMNamePrefix'), '3')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('nodesLbIPConfigID')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 2213,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[concat('SSH-',parameters('masterVMNamePrefix'), '4')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('nodesLbIPConfigID')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 2214,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[concat('SSH-',parameters('masterVMNamePrefix'), '5')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('nodesLbIPConfigID')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 2215,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('masterVMNamePrefix'), copyIndex(1), '-nic')]",
       "location": "[resourceGroup().location]",
@@ -224,7 +126,8 @@
         "count": "[parameters('masterCount')]"
       },
       "dependsOn": [
-        "[variables('nodesLbID')]"
+        "[concat('Microsoft.Network/publicIPAddresses/', [parameters('dnsNameForContainerServicePublicIP')])]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "properties": {
         "ipConfigurations": [
