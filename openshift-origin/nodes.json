@@ -167,7 +167,8 @@
                 }
               ]
             }
-          },
+          }
+        },
         "storageProfile": {
           "imageReference": {
             "publisher": "[parameters('osImagePublisher')]",
