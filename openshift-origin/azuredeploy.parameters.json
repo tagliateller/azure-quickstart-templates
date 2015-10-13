@@ -1,6 +1,6 @@
 {
   "newStorageAccountNamePrefix": {
-    "value": "openshift-origin"
+    "value": "oov3storage"
   },
   "adminUsername": {
     "value": "azureuser"
