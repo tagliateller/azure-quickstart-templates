@@ -29,6 +29,9 @@
       "metadata": {
         "description": "The CentOS version for the VM."
       }
+    },
+    "sshKeyData": {
+      "type": "string"
     }
   },
   "variables": {
