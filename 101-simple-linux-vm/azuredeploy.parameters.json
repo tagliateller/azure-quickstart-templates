@@ -8,14 +8,14 @@
     "adminUsername": {
       "value": "azureuser"
     },
-    "adminPassword": {
-      "value": "berlin1234$"
-    },
     "dnsNameForPublicIP": {
       "value": "demov3-master"
     },
     "centosOSVersion": {
       "value": "7.1"
-    }
+    },
+    "sshKeyData": {
+      "value": "ssh rsa public key"
+    }    
   }
 }
