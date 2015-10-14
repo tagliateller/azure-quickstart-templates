@@ -8,8 +8,14 @@
     "adminUsername": {
       "value": "azureuser"
     },
-    "dnsNameForPublicIP": {
+    "dnsNameForPublicIPMaster": {
       "value": "demov3-master"
+    },
+    "dnsNameForPublicIPNode1": {
+      "value": "demov3-node1"
+    },
+    "dnsNameForPublicIPNode2": {
+      "value": "demov3-node2"
     },
     "centosOSVersion": {
       "value": "7.1"
