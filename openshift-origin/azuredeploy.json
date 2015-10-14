@@ -2,168 +2,129 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "newStorageAccountNamePrefix": {
+    "newStorageAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Globally Unique DNS Name Prefix for the Storage Account where the Virtual Machine's disks will be placed.  An integer will be appended to the end.  StorageAccounts may contain at most variables('vmsPerStorageAccount')"
+        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "azureuser",
       "metadata": {
         "description": "User name for the Virtual Machine."
       }
     },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the Virtual Machine."
-      }
-    },
-    "dnsNameForMasterPublicIP": {
+    "dnsNameForPublicIPMaster": {
       "type": "string",
       "metadata": {
-        "description": "Sets the Domain name label for the container service.  The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address."
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
     },
-    "dnsNameForNodePublicIP": {
+    "dnsNameForPublicIPNode1": {
       "type": "string",
       "metadata": {
-        "description": "Sets the Domain name label for the container service.  The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address."
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
     },
-    "nodeCount": {
-      "type": "int",
-      "defaultValue": 2,
+    "dnsNameForPublicIPNode2": {
+      "type": "string",
       "metadata": {
-        "description": "The number of nodes for the cluster."
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
     },
-    "masterCount": {
-      "type": "int",
-      "defaultValue": 1,
+    "centosOSVersion": {
+      "type": "string",
+      "defaultValue": "7.1",
       "allowedValues": [
-        1,
-        3
+        "7.1"
       ],
       "metadata": {
-        "description": "The number of masters for the cluster."
+        "description": "The CentOS version for the VM."
       }
     },
-    "nodeVMSize": {
-      "type": "string",
-      "defaultValue": "Standard_D1",
-      "allowedValues": [
-        "Standard_A1",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D11",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14"
-      ],
-      "metadata": {
-        "description": "The size of the Virtual Machine."
-      }
-    },
-    "masterVMSize": {
-      "type": "string",
-      "defaultValue": "Standard_D1",
-      "allowedValues": [
-        "Standard_A1",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D11",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14"
-      ],
-      "metadata": {
-        "description": "The size of the Virtual Machine for the master."
-      }
-    },
-    "clusterPrefix": {
-      "type": "string",
-      "defaultValue": "demov3",
-      "metadata": {
-        "description": "The prefix to identify the cluster."
-      }
-    },
-    "sshRSAPublicKey": {
-      "type": "string",
-      "defaultValue": "disabled",
-      "metadata": {
-        "description": "Configure all linux machines with the SSH rsa public key string.  Use 'disabled' to not configure access with SSH rsa public key."
-      }
+    "sshKeyData": {
+      "type": "string"
     }
   },
   "variables": {
-    "masterVMNamePrefix": "[concat(parameters('clusterPrefix'),'master')]",
-    "nodeVMNamePrefix": "[concat(parameters('clusterPrefix'),'node')]",
-    "osImagePublisher": "OpenLogic",
-    "osImageOffer": "CentOS",
-    "osImageSKU": "7.1",
-    "osImageVersion": "7.1.20150731",
-    "virtualNetworkName": "VNET",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetName": "Subnet",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "location": "East US",
+    "imagePublisher": "OpenLogic",
+    "imageOffer": "CentOS",
+    "OSDiskNameMaster": "demov3-master-osdisk",
+    "OSDiskNameNode1": "demov3-node1-osdisk",
+    "OSDiskNameNode2": "demov3-node2-osdisk",
+    "nicNameMaster": "demov3-master-nic",
+    "nicNameNode1": "demov3-node1-nic",
+    "nicNameNode2": "demov3-node2-nic",
     "addressPrefix": "10.0.0.0/16",
-    "subnetPrefix": "10.0.0.0/18",
-    "masterFirstAddr": 5,
-    "nodeFirstAddr": 50,
-    "nsgName": "node-nsg",
-    "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]",
-    "storageAccountType": "Standard_GRS",
-    "customScriptLocation": "https://raw.githubusercontent.com/tagliateller/azure-quickstart-templates/master/openshift-origin"
+    "subnetName": "Subnet",
+    "subnetPrefix": "10.0.0.0/24",
+    "storageAccountType": "Standard_LRS",
+    "publicIPAddressNameMaster": "demov3-master-publicip",
+    "publicIPAddressNameNode1": "demov3-node1-publicip",
+    "publicIPAddressNameNode2": "demov3-node2-publicip",
+    "publicIPAddressType": "Dynamic",
+    "vmStorageAccountContainerName": "vhds",
+    "vmNameMaster": "demov3-master",
+    "vmNameNode1": "demov3-node1",
+    "vmNameNode2": "demov3-node2",
+    "vmSize": "Standard_D1",
+    "virtualNetworkName": "demov3-vnet",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('newStorageAccountNamePrefix'),'0')]",
+      "name": "[parameters('newStorageAccountName')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
       }
     },
     {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('nsgName')]",
-      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressNameMaster')]",
+      "location": "[variables('location')]",
       "properties": {
-        "securityRules": [
-          {
-            "name": "ssh",
-            "properties": {
-              "description": "SSH",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 200,
-              "direction": "Inbound"
-            }
-          }
-        ]
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForPublicIPMaster')]"
+        }
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressNameNode1')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForPublicIPNode1')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressNameNode2')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForPublicIPNode2')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[variables('nsgID')]"
-      ],
+      "location": "[variables('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -174,9 +135,32 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]",
-              "networkSecurityGroup": {
-                "id": "[variables('nsgID')]"
+              "addressPrefix": "[variables('subnetPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicNameMaster')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameMaster'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameMaster'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
               }
             }
           }
@@ -184,135 +168,230 @@
       }
     },
     {
-      "apiVersion": "2015-01-01",
-      "type": "Microsoft.Resources/deployments",
-      "name": "createMaster",
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicNameNode1')]",
+      "location": "[variables('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountNamePrefix'), '0')]",
-        "[variables('vnetID')]"
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameNode1'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('customScriptLocation'), '/', 'master.json')]",
-          "contentVersion": "1.0.0.0"
+        "ipConfigurations": [
+          {
+            "name": "ipconfig2",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameNode1'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicNameNode2')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameNode2'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig3",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameNode2'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmNameMaster')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameMaster'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
         },
-        "parameters": {
-          "newStorageAccountName": {
-            "value": "[concat(parameters('newStorageAccountNamePrefix'), '0')]"
+        "osProfile": {
+          "computername": "[variables('vmNameMaster')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('centosOSVersion')]",
+            "version": "latest"
           },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "dnsNameForContainerServicePublicIP": {
-            "value": "[parameters('dnsNameForMasterPublicIP')]"
-          },
-          "masterVMSize": {
-            "value": "[parameters('masterVMSize')]"
-          },
-          "masterCount": {
-            "value": "[parameters('masterCount')]"
-          },
-          "virtualNetworkName": {
-            "value": "[variables('virtualNetworkName')]"
-          },
-          "subnetPrefix": {
-            "value": "[variables('subnetPrefix')]"
-          },
-          "subnetRef": {
-            "value": "[variables('subnetRef')]"
-          },
-          "masterFirstAddr": {
-            "value": "[variables('masterFirstAddr')]"
-          },
-          "masterVMNamePrefix": {
-            "value": "[variables('masterVMNamePrefix')]"
-          },
-          "osImagePublisher": {
-            "value": "[variables('osImagePublisher')]"
-          },
-          "osImageOffer": {
-            "value": "[variables('osImageOffer')]"
-          },
-          "osImageSKU": {
-            "value": "[variables('osImageSKU')]"
-          },
-          "osImageVersion": {
-            "value": "[variables('osImageVersion')]"
-          },
-          "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskNameMaster'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicNameMaster'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+             "enabled": "true",
+             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
         }
       }
     },
     {
-      "apiVersion": "2015-01-01",
-      "type": "Microsoft.Resources/deployments",
-      "name": "createNodes",
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmNameNode1')]",
+      "location": "[variables('location')]",
       "dependsOn": [
-        "[variables('vnetID')]"
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameNode1'))]"
       ],
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('customScriptLocation'), '/', 'nodes.json')]",
-          "contentVersion": "1.0.0.0"
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
         },
-        "parameters": {
-          "newStorageAccountNamePrefix": {
-            "value": "[concat(parameters('newStorageAccountNamePrefix'))]"
+        "osProfile": {
+          "computername": "[variables('vmNameNode1')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('centosOSVersion')]",
+            "version": "latest"
           },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskNameNode1'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicNameNode1'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+             "enabled": "true",
+             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmNameNode2')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNameNode2'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
+        },
+        "osProfile": {
+          "computername": "[variables('vmNameNode2')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('centosOSVersion')]",
+            "version": "latest"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "nodeVMSize": {
-            "value": "[parameters('nodeVMSize')]"
-          },
-          "nodeCount": {
-            "value": "[parameters('nodeCount')]"
-          },
-          "masterCount": {
-            "value": "[parameters('nodeCount')]"
-          },
-          "virtualNetworkName": {
-            "value": "[variables('virtualNetworkName')]"
-          },
-          "subnetPrefix": {
-            "value": "[variables('subnetPrefix')]"
-          },
-          "subnetRef": {
-            "value": "[variables('subnetRef')]"
-          },
-          "nodeFirstAddr": {
-            "value": "[variables('nodeFirstAddr')]"
-          },
-          "masterVMNamePrefix": {
-            "value": "[variables('masterVMNamePrefix')]"
-          },
-          "nodeVMNamePrefix": {
-            "value": "[variables('nodeVMNamePrefix')]"
-          },
-          "osImagePublisher": {
-            "value": "[variables('osImagePublisher')]"
-          },
-          "osImageOffer": {
-            "value": "[variables('osImageOffer')]"
-          },
-          "osImageSKU" : {
-            "value": "[variables('osImageSKU')]"
-          },
-          "osImageVersion" : {
-            "value": "[variables('osImageVersion')]"
-          },
-          "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskNameNode2'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicNameNode2'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+             "enabled": "true",
+             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
         }
       }
