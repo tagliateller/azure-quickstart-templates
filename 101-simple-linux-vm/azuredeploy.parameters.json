@@ -3,19 +3,19 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "newStorageAccountName": {
-      "value": "uniqueStorageAccount"
+      "value": "demov3storage"
     },
     "adminUsername": {
-      "value": "userName"
+      "value": "azureuser"
     },
     "adminPassword": {
-      "value": "password"
+      "value": "berlin1234$"
     },
     "dnsNameForPublicIP": {
-      "value": "simplelinux"
+      "value": "demov3-master"
     },
-    "ubuntuOSVersion": {
-      "value": "14.04.2-LTS"
+    "centosOSVersion": {
+      "value": "7.1"
     }
   }
 }
