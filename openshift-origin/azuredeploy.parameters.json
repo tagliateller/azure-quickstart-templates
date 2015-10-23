@@ -17,6 +17,9 @@
     "dnsNameForPublicIPNode2": {
       "value": "demov3-node2"
     },
+    "dnsNameForPublicIPBind": {
+      "value": "demov3-bind"
+    },
     "centosOSVersion": {
       "value": "7.1"
     },
