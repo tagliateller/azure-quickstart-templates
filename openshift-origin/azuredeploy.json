@@ -177,7 +177,8 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+               "privateIPAddress":"10.0.0.11",
+               "privateIPAllocationMethod":"Static",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameMaster'))]"
               },
@@ -186,7 +187,12 @@
               }
             }
           }
-        ]
+        ],
+        "dnsSettings":{  
+          "dnsServers":[  
+            "10.0.0.31"
+         ]
+        }
       }
     },
     {
@@ -203,7 +209,8 @@
           {
             "name": "ipconfig2",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+               "privateIPAddress":"10.0.0.21",
+               "privateIPAllocationMethod":"Static",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameNode1'))]"
               },
@@ -212,7 +219,12 @@
               }
             }
           }
-        ]
+        ],
+        "dnsSettings":{  
+          "dnsServers":[  
+            "10.0.0.31"
+         ]
+        }
       }
     },
     {
@@ -229,7 +241,8 @@
           {
             "name": "ipconfig3",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+               "privateIPAddress":"10.0.0.22",
+               "privateIPAllocationMethod":"Static",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameNode2'))]"
               },
@@ -238,7 +251,12 @@
               }
             }
           }
-        ]
+        ],
+        "dnsSettings":{  
+          "dnsServers":[  
+            "10.0.0.31"
+         ]
+        }
       }
     },
     {
@@ -255,7 +273,8 @@
           {
             "name": "ipconfig4",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+               "privateIPAddress":"10.0.0.31",
+               "privateIPAllocationMethod":"Static",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameBind'))]"
               },
@@ -264,7 +283,12 @@
               }
             }
           }
-        ]
+        ],
+        "dnsSettings":{  
+          "dnsServers":[  
+            "10.0.0.31"
+         ]
+        }
       }
     },
     {
