@@ -55,7 +55,7 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "customScriptInstallOriginFile": "install_openshift_origin.sh",
     "customScriptInstallOriginUrl": "[concat('https://raw.githubusercontent.com/tagliateller/azure-quickstart-templates/master/openshift-origin-single-machine/',variables('customScriptInstallOriginFile'))]",
-    "customScriptInstallOriginCommand": "[concat('bash ',variables('customScriptInstallOriginFile'))]",
+    "customScriptInstallOriginCommand": "[concat('bash ',variables('customScriptInstallOriginFile'))]"
   },
   "resources": [
     {
