@@ -52,7 +52,10 @@
     "virtualNetworkName": "demov3-vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+    "customScriptInstallOriginFile": "install_openshift_origin.sh",
+    "customScriptInstallOriginUrl": "[concat('https://github.com/tagliateller/azure-quickstart-templates/openshift-origin-single-machine/',variables('customScriptInstallOriginFile'))]",
+    "customScriptInstallOriginCommand": "[concat('bash ',variables('customScriptInstallOriginFile'))]",
   },
   "resources": [
     {
@@ -180,6 +183,20 @@
              "enabled": "true",
              "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'),'/installorigin')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.2",
+        "settings": {
+          "commandToExecute": "[variables('customScriptInstallOriginCommand')]"
         }
       }
     }
