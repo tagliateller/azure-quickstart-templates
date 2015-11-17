@@ -199,6 +199,9 @@
         "type": "CustomScriptForLinux",
         "typeHandlerVersion": "1.2",
         "settings": {
+          "fileUris": [
+            "[variables('customScriptInstallOriginUrl')]",
+          ],
           "commandToExecute": "[variables('customScriptInstallOriginCommand')]"
         }
       }
