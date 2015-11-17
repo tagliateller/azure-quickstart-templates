@@ -6,7 +6,7 @@
       "value": "West US"
     },
     "dnsNameLabel": {
-      "value": ""
+      "value": "ansibletest"
     },
     "publicIPType": {
       "value": "Static"
@@ -15,7 +15,7 @@
       "value": 3
     },
     "serversRole": {
-      "value": ""
+      "value": "test"
     },
     "serversPurpose": {
       "value": "DEV"
@@ -24,7 +24,7 @@
       "value": "Standard_LRS"
     },
     "newStorageAccountName": {
-      "value": ""
+      "value": "ansibletest"
     },
     "vmSize": {
       "value": "Standard_D1"
@@ -33,16 +33,16 @@
       "value": "ext4"
     },
     "adminUserName": {
-      "value": ""
+      "value": "azureuser"
     },
     "adminPassword": {
-      "value": ""
+      "value": "azure1234"
     },
     "sshKeyData": {
       "value": ""
     },
     "customScriptConfigStorageAccountName": {
-      "value": ""
+      "value": "ansiblescripts"
     },
     "customScriptConfigStorageAccountKey": {
       "value": ""
