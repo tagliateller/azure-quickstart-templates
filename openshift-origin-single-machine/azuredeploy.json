@@ -53,7 +53,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-    "customScriptInstallOriginFile": "install_openshift_origin.sh",
+    "customScriptInstallOriginFile": "install_test.sh",
     "customScriptInstallOriginUrl": "[concat('https://raw.githubusercontent.com/tagliateller/azure-quickstart-templates/master/openshift-origin-single-machine/',variables('customScriptInstallOriginFile'))]",
     "customScriptInstallOriginCommand": "[concat('bash ',variables('customScriptInstallOriginFile'))]"
   },
