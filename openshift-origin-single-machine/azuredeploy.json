@@ -200,7 +200,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[variables('customScriptInstallOriginUrl')]",
+            "[variables('customScriptInstallOriginUrl')]"
           ],
           "commandToExecute": "[variables('customScriptInstallOriginCommand')]"
         }
