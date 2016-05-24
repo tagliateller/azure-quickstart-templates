@@ -57,10 +57,15 @@ Param(
 	[string]$elasticSearchBaseFolder,
     [string]$discoveryEndpoints,
 	[string]$elasticClusterName,
+    [string]$storageKey,
+    [string]$marvelEndpoints,
+	[string]$po,
+	[string]$r,
+    [switch]$marvelOnlyNode,
 	[switch]$masterOnlyNode,
 	[switch]$clientOnlyNode,
 	[switch]$dataOnlyNode,
-	[switch]$installMarvel,
+	[switch]$m,
 	[switch]$jmeterConfig
 )
 
@@ -150,7 +155,7 @@ function Download-Jdk
             lmsg "Downloading JDK from $source to $destination"
 
 			$client.Headers.Add([System.Net.HttpRequestHeader]::Cookie, $cookie) 
-			$client.downloadFile($source, $destination)
+			$client.downloadFile($source, $destination) | Out-Null
 		}catch [System.Net.WebException],[System.Exception]{
 			lerr $_.Exception.Message
             lerr $_.Exception.StackTrace
@@ -205,7 +210,7 @@ function Download-ElasticSearch
     )
 	# download ElasticSearch from a given source URL to destination folder
 	try{
-			$source = if ($elasticVersion -match '2.0.0') {"https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/$elasticVersion/elasticsearch-$elasticVersion.zip"} else { "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-$elasticVersion.zip" }
+			$source = if ($elasticVersion -match '2.') {"https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/$elasticVersion/elasticsearch-$elasticVersion.zip"} else { "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-$elasticVersion.zip" }
 			$destination = "$targetDrive`:\Downloads\ElasticSearch\Elastic-Search.zip"
             
             # create folder if doesn't exists and suppress the output
@@ -218,7 +223,7 @@ function Download-ElasticSearch
 
             lmsg "Downloading Elasticsearch version $elasticVersion from $source to $destination"
 
-			$client.downloadFile($source, $destination)
+			$client.downloadFile($source, $destination) | Out-Null
 		}catch [System.Net.WebException],[System.Exception]{
 			lerr $_.Exception.Message
             lerr $_.Exception.StackTrace
@@ -252,15 +257,15 @@ function SetEnv-JavaHome($jdkInstallLocation)
     $homePath = $jdkInstallLocation
     
     lmsg "Setting JAVA_HOME in the registry to $homePath..."
-	Set-ItemProperty -Path $regEnvPath -Name JAVA_HOME -Value $homePath
+	Set-ItemProperty -Path $regEnvPath -Name JAVA_HOME -Value $homePath | Out-Null
     
     lmsg 'Setting JAVA_HOME for the current session...'
-    Set-Item Env:JAVA_HOME "$homePath"
+    Set-Item Env:JAVA_HOME "$homePath" | Out-Null
 
     # Additional check
     if ([environment]::GetEnvironmentVariable("JAVA_HOME","machine") -eq $null)
 	{
-	    [environment]::setenvironmentvariable("JAVA_HOME",$homePath,"machine")
+	    [environment]::setenvironmentvariable("JAVA_HOME",$homePath,"machine") | Out-Null
 	}
 
     lmsg 'Modifying path variable to point to java executable...'
@@ -270,9 +275,30 @@ function SetEnv-JavaHome($jdkInstallLocation)
     Set-Item Env:PATH "$currentPath"
 }
 
+function SetEnv-HeapSize
+{
+    # Obtain total memory in MB and divide in half
+    $halfRamCnt = [math]::Round(((Get-WmiObject Win32_PhysicalMemory | measure-object Capacity -sum).sum/1mb)/2,0)
+    $halfRamCnt = [math]::Min($halfRamCnt, 31744)
+    $halfRam = $halfRamCnt.ToString() + 'm'
+    lmsg "Half of total RAM in system is $halfRam mb."
+
+    lmsg "Setting ES_HEAP_SIZE in the registry to $halfRam..."
+	Set-ItemProperty -Path $regEnvPath -Name ES_HEAP_SIZE -Value $halfRam | Out-Null
+
+    lmsg 'Setting ES_HEAP_SIZE for the current session...'
+    Set-Item Env:ES_HEAP_SIZE $halfRam | Out-Null
+
+    # Additional check
+    if ([environment]::GetEnvironmentVariable("ES_HEAP_SIZE","machine") -eq $null)
+	{
+	    [environment]::setenvironmentvariable("ES_HEAP_SIZE",$halfRam,"machine") | Out-Null
+	}
+}
+
+
 function Install-ElasticSearch ($driveLetter, $elasticSearchZip, $subFolder = $elasticSearchBaseFolder)
 {
-	
 	# Designate unzip location 
 	$elasticSearchPath =  Join-Path "$driveLetter`:" -ChildPath $subFolder
 	
@@ -331,11 +357,9 @@ function ElasticSearch-InstallService($scriptPath)
 	$elasticService = (get-service | Where-Object {$_.Name -match "elasticsearch"}).Name
 	if($elasticService -eq $null) 
     {	
-        #$proc = start-process cmd -argumentlist "/c $scriptpath install" -passthru -nonewwindow -wait
-        #if($proc -ne 0){
-         #   lerr "exception encountered while installing elasticsearch service"
-         #   break
-        #}
+        # First set heap size
+        SetEnv-HeapSize
+
         lmsg 'Installing elasticsearch as a service...'
         cmd.exe /C "$scriptPath install"
         if ($LASTEXITCODE) {
@@ -352,12 +376,12 @@ function ElasticSearch-StartService()
     if($elasticService -ne $null)
     {
         lmsg 'Starting elasticsearch service...'
-        Start-Service -Name $elasticService
+        Start-Service -Name $elasticService | Out-Null
         $svc = Get-Service | Where-Object { $_.Name -Match 'elasticsearch'}
         
         if($svc -ne $null)
         {
-            $svc.WaitForStatus('Running', '00:00:05')
+            $svc.WaitForStatus('Running', '00:00:10')
         }
 
 		lmsg 'Setting the elasticsearch service startup to automatic...'
@@ -391,7 +415,7 @@ function Jmeter-Download($drive)
 
             lmsg "Downloading Jmeter SA from $source to $destination"
 
-			$client.downloadFile($source, $destination)
+			$client.downloadFile($source, $destination) | Out-Null
 		}catch [System.Net.WebException],[System.Exception]{
 			lerr $_.Exception.Message
             lerr $_.Exception.StackTrace
@@ -437,6 +461,23 @@ function Jmeter-ConfigFirewall
     }
 }
 
+function Elasticsearch-OpenPorts
+{
+	# Add firewall rules
+    lmsg 'Adding firewall rule - Allow Elasticsearch Inbound Port 9200'
+    New-NetFirewallRule -Name 'ElasticSearch_In_Lb' -DisplayName 'Allow Elasticsearch Inbound Port 9200' -Protocol tcp -LocalPort 9200 -Action Allow -Enabled True -Direction Inbound | Out-Null
+
+    lmsg 'Adding firewall rule - Allow Elasticsearch Outbound Port 9200 for Marvel'
+    New-NetFirewallRule -Name 'ElasticSearch_Out_Lb' -DisplayName 'Allow Elasticsearch Outbound Port 9200 for Marvel' -Protocol tcp -LocalPort 9200 -Action Allow -Enabled True -Direction Outbound | Out-Null
+
+    lmsg 'Adding firewall rule - Allow Elasticsearch Inter Node Communication Inbound Port 9300'
+    New-NetFirewallRule -Name 'ElasticSearch_In_Unicast' -DisplayName 'Allow Elasticsearch Inter Node Communication Inbound Port 9300' -Protocol tcp -LocalPort 9300 -Action Allow -Enabled True -Direction Inbound | Out-Null
+    
+    lmsg 'Adding firewall rule - Allow Elasticsearch Inter Node Communication Outbound Port 9300'
+    New-NetFirewallRule -Name 'ElasticSearch_Out_Unicast' -DisplayName 'Allow Elasticsearch Inter Node Communication Outbound Port 9300' -Protocol tcp -LocalPort 9300 -Action Allow -Enabled True -Direction Outbound | Out-Null
+
+}
+
 function Jmeter-Run($unzipLoc)
 {
     $targetPath = Join-Path -Path $unzipLoc -ChildPath 'startAgent.bat'
@@ -479,103 +520,127 @@ function Install-WorkFlow
     SetEnv-JavaHome $jdkInstallLocation
 	
 	# Configure cluster name and other properties
-		
-		# Cluster name
-		if($elasticClusterName.Length -eq 0) { $elasticClusterName = 'elasticsearch_cluster' }
+	# Cluster name
+	if($elasticClusterName.Length -eq 0) { $elasticClusterName = 'elasticsearch_cluster' }
         
-        # Unicast host setup
-        if($discoveryEndpoints.Length -ne 0) { $ipAddresses = Implode-Host2 $discoveryEndpoints }
+    # Unicast host setup
+    if($discoveryEndpoints.Length -ne 0) { $ipAddresses = Implode-Host2 $discoveryEndpoints }
 		
-		# Extract install folders
-		$elasticSearchBinParent = (gci -path $elasticSearchInstallLocation -filter "bin" -Recurse).Parent.FullName
-		$elasticSearchBin = Join-Path $elasticSearchBinParent -ChildPath "bin"
-		$elasticSearchConfFile = Join-Path $elasticSearchBinParent -ChildPath "config\elasticsearch.yml"
+	# Extract install folders
+	$elasticSearchBinParent = (gci -path $elasticSearchInstallLocation -filter "bin" -Recurse).Parent.FullName
+	$elasticSearchBin = Join-Path $elasticSearchBinParent -ChildPath "bin"
+	$elasticSearchConfFile = Join-Path $elasticSearchBinParent -ChildPath "config\elasticsearch.yml"
 		
-		# Set values
-        lmsg "Configure cluster name to $elasticClusterName"
-        $textToAppend = "`n#### Settings automatically added by deployment script`ncluster.name: $elasticClusterName"
+	# Set values
+    lmsg "Configure cluster name to $elasticClusterName"
+    $textToAppend = "`n#### Settings automatically added by deployment script`ncluster.name: $elasticClusterName"
 
-        # Use hostname for node name
-        $hostname = (Get-WmiObject -Class Win32_ComputerSystem -Property Name).Name
-        $textToAppend = $textToAppend + "`nnode.name: $hostname"
+    # Use hostname for node name
+    $hostname = (Get-WmiObject -Class Win32_ComputerSystem -Property Name).Name
+    $textToAppend = $textToAppend + "`nnode.name: $hostname"
 
-        # Set data paths
-        if($folderPathSetting -ne $null)
-        {
-            $textToAppend = $textToAppend + "`npath.data: $folderPathSetting"
-        }
+    # Set data paths
+    if($folderPathSetting -ne $null)
+    {
+        $textToAppend = $textToAppend + "`npath.data: $folderPathSetting"
+    }
 
-        if($masterOnlyNode)
+    if($masterOnlyNode)
+    {
+        lmsg 'Configure node as master only'
+        $textToAppend = $textToAppend + "`nnode.master: true`nnode.data: false"
+    }
+    elseif($dataOnlyNode)
+    {
+        lmsg 'Configure node as data only'
+        $textToAppend = $textToAppend + "`nnode.master: false`nnode.data: true"
+    }
+    elseif($clientOnlyNode)
+    {
+        lmsg 'Configure node as client only'
+        $textToAppend = $textToAppend + "`nnode.master: false`nnode.data: false"
+    }
+    else
+    {
+        lmsg 'Configure node as master and data'
+        $textToAppend = $textToAppend + "`nnode.master: true`nnode.data: true"
+    }
+
+	$textToAppend = $textToAppend + "`ndiscovery.zen.minimum_master_nodes: 2"
+    $textToAppend = $textToAppend + "`ndiscovery.zen.ping.multicast.enabled: false"
+
+    if($ipAddresses -ne $null)
+    {
+        $textToAppend = $textToAppend + "`ndiscovery.zen.ping.unicast.hosts: [$ipAddresses]"
+    }
+
+    # In ES 2.x you explicitly need to set network host to _non_loopback_ or the IP address of the host else other nodes cannot communicate
+    if ($elasticSearchVersion -match '2.')
+    {
+        $textToAppend = $textToAppend + "`nnetwork.host: _non_loopback_"
+    }
+
+	# configure the cloud-azure plugin, if selected
+	if ($po.Length -ne 0 -and $r.Length -ne 0)
+	{
+		if ($elasticSearchVersion -match '2.')
+		{
+			cmd.exe /C "$elasticSearchBin\plugin.bat install cloud-azure"
+			
+			$textToAppend = $textToAppend + "`ncloud.azure.storage.default.account: $po"
+			$textToAppend = $textToAppend + "`ncloud.azure.storage.default.key: $r"
+		}
+		else
+		{
+			cmd.exe /C "$elasticSearchBin\plugin.bat -i elasticsearch/elasticsearch-cloud-azure/2.8.2"
+			
+			$textToAppend = $textToAppend + "`ncloud.azure.storage.account: $po"
+			$textToAppend = $textToAppend + "`ncloud.azure.storage.key: $r"
+		}
+	}
+
+    # configure marvel as required
+    if($marvelEndpoints.Length -ne 0)
+    {
+        $marvelIPAddresses = Implode-Host2 $marvelEndpoints
+        if ($elasticSearchVersion -match '2.')
         {
-            lmsg 'Configure node as master only'
-            $textToAppend = $textToAppend + "`nnode.master: true`nnode.data: false"
-        }
-        elseif($dataOnlyNode)
-        {
-            lmsg 'Configure node as data only'
-            $textToAppend = $textToAppend + "`nnode.master: false`nnode.data: true"
-        }
-        elseif($clientOnlyNode)
-        {
-            lmsg 'Configure node as client only'
-            $textToAppend = $textToAppend + "`nnode.master: false`nnode.data: false"
+            $textToAppend = $textToAppend + "`nmarvel.agent.exporters:`n  id1:`n    type: http`n    host: [$marvelIPAddresses]"
         }
         else
         {
-            lmsg 'Configure node as master and data'
-            $textToAppend = $textToAppend + "`nnode.master: true`nnode.data: true"
+            $textToAppend = $textToAppend + "`nmarvel.agent.exporter.hosts: [$marvelIPAddresses]"
         }
+    }
+        
+    if ($marvelOnlyNode -and ($elasticSearchVersion -match '1.'))
+    {
+        $textToAppend = $textToAppend + "`nmarvel.agent.enabled: false"
+    }
 
-		$textToAppend = $textToAppend + "`ndiscovery.zen.minimum_master_nodes: 2"
-        $textToAppend = $textToAppend + "`ndiscovery.zen.ping.multicast.enabled: false"
-
-        if($ipAddresses -ne $null)
-        {
-            $textToAppend = $textToAppend + "`ndiscovery.zen.ping.unicast.hosts: [$ipAddresses]"
-        }
-
-        # In ES 2.0 you explicitly need to set network host to _non_loopback_ or the IP address of the host else other nodes cannot communicate
-        if ($elasticSearchVersion -match '2.0.0')
-        {
-            $textToAppend = $textToAppend + "`nnetwork.host: _non_loopback_"
-        }
-
-
-        Add-Content $elasticSearchConfFile $textToAppend
+    Add-Content $elasticSearchConfFile $textToAppend
 		
-
-	# Add firewall rules
-    lmsg 'Adding firewall rule - Allow Elasticsearch Inbound Port 9200'
-    New-NetFirewallRule -Name 'ElasticSearch_In_Lb' -DisplayName 'Allow Elasticsearch Inbound Port 9200' -Protocol tcp -LocalPort 9200 -Action Allow -Enabled True -Direction Inbound | Out-Null
-
-    lmsg 'Adding firewall rule - Allow Elasticsearch Inter Node Communication Inbound Port 9300'
-    New-NetFirewallRule -Name 'ElasticSearch_In_Unicast' -DisplayName 'Allow Elasticsearch Inter Node Communication Inbound Port 9300' -Protocol tcp -LocalPort 9300 -Action Allow -Enabled True -Direction Inbound | Out-Null
-    
-    lmsg 'Adding firewall rule - Allow Elasticsearch Inter Node Communication Outbound Port 9300'
-    New-NetFirewallRule -Name 'ElasticSearch_Out_Unicast' -DisplayName 'Allow Elasticsearch Inter Node Communication Outbound Port 9300' -Protocol tcp -LocalPort 9300 -Action Allow -Enabled True -Direction Outbound | Out-Null
-
+    # Add firewall exceptions
+    Elasticsearch-OpenPorts
 
     # Install service using the batch file in bin folder
     $scriptPath = Join-Path $elasticSearchBin -ChildPath "service.bat"
     ElasticSearch-InstallService $scriptPath
 
-    # Start service
-    ElasticSearch-StartService
-
     # Install marvel if specified
-    if ($installMarvel)
+    if ($m)
     {
-        if ($elasticSearchVersion -match '2.0.0')
+        if ($elasticSearchVersion -match '2.')
         {
             cmd.exe /C "$elasticSearchBin\plugin.bat install license"
             cmd.exe /C "$elasticSearchBin\plugin.bat install marvel-agent"
         }
         else
         {
-            cmd.exe /C "$elasticSearchBin\plugin.bat -i elasticsearch/marvel/latest"
+            cmd.exe /C "$elasticSearchBin\plugin.bat -i elasticsearch/marvel/1.3.1"
         }
-    }		
-		
+    }
+
 	# Temporary measure to configure each ES node for JMeter server agent
 	if ($jmeterConfig)
 	{
@@ -585,6 +650,8 @@ function Install-WorkFlow
 		Jmeter-Run $unzipLocation
 	}
 
+	# Start service
+    ElasticSearch-StartService
 
     # Verify service TODO: Investigate why verification fails during ARM deployment
     # ElasticSearch-VerifyInstall
@@ -592,15 +659,18 @@ function Install-WorkFlow
 
 function Startup-Output
 {
-    lmsg 'Install workflow starting with following params:'
+	lmsg 'Install workflow starting with following params:'
     lmsg "Elasticsearch version: $elasticSearchVersion"
     if($elasticClusterName.Length -ne 0) { lmsg "Elasticsearch cluster name: $elasticClusterName" }
     if($jdkDownloadLocation.Length -ne 0) { lmsg "Jdk download location: $jdkDownloadLocation" }
     if($elasticSearchBaseFolder.Length -ne 0) { lmsg "Elasticsearch base folder: $elasticSearchBaseFolder" }
     if($discoveryEndpoints.Length -ne 0) { lmsg "Discovery endpoints: $discoveryEndpoints" }
+    if($marvelEndpoints.Length -ne 0) { lmsg "Marvel endpoints: $marvelEndpoints" }
+	if($po.Length -ne 0 -and $r.Length -ne 0) { lmsg "Installing cloud-azure plugin" }
     if($masterOnlyNode) { lmsg 'Node installation mode: Master' }
     if($clientOnlyNode) { lmsg 'Node installation mode: Client' }
     if($dataOnlyNode) { lmsg 'Node installation mode: Data' }
+    if($marvelOnlyNode) { lmsg 'Node installation mode: Marvel' }
 }
 
 Install-WorkFlow

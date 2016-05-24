@@ -41,7 +41,7 @@
       "existingdiagnosticsStorageAccountName": {
           "type": "string",
           "metadata": {
-        "description": "The name of an existing storage account to which diagnostics data will be transfered."
+        "description": "The name of an existing storage account to which diagnostics data will be transferred."
       }
       },
       "existingdiagnosticsStorageResourceGroup": {
@@ -161,7 +161,7 @@
           "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
-          "computername": "[variables('vmName')]",
+          "computerName": "[variables('vmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
