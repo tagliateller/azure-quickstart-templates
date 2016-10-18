@@ -582,7 +582,7 @@
 					"osDisk": {
 						"name": "[concat(parameters('openshiftMasterHostname'), 'osdisk')]",
 						"vhd": {
-							"uri": "[concat('https://', variables('newStorageAccountMaster'), '.blob.core.windows.net/vhd/', parameters('openshiftMasterHostname'), '.vhd')]"
+							"uri": "[concat('https://', variables('newStorageAccountMaster'), '.blob.core.cloudapi.de/vhd/', parameters('openshiftMasterHostname'), '.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
@@ -592,7 +592,7 @@
 						"diskSizeGB": "1023",
 						"lun": 0,
 						"vhd": {
-							"uri": "[concat('https://', variables('newStorageAccountMaster'), '.blob.core.windows.net/vhd/', parameters('openshiftMasterHostname'), '-docker-pool.vhd')]"
+							"uri": "[concat('https://', variables('newStorageAccountMaster'), '.blob.core.cloudapi.de/vhd/', parameters('openshiftMasterHostname'), '-docker-pool.vhd')]"
 						},
 						"createOption": "Empty"
 					}]
@@ -696,7 +696,7 @@
 					"osDisk": {
 						"name": "[concat(variables('namingInfix'), copyIndex(), 'osdisk')]",
 						"vhd": {
-							"uri": "[concat('https://', variables('newStorageAccountNode'), '.blob.core.windows.net/vhd/', variables('namingInfix'), copyIndex(), '.vhd')]"
+							"uri": "[concat('https://', variables('newStorageAccountNode'), '.blob.core.cloudapi.de/vhd/', variables('namingInfix'), copyIndex(), '.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
@@ -706,7 +706,7 @@
 						"diskSizeGB": "1023",
 						"lun": 0,
 						"vhd": {
-							"uri": "[concat('https://', variables('newStorageAccountNode'), '.blob.core.windows.net/vhd/', variables('namingInfix'), copyIndex(), '-docker-pool.vhd')]"
+							"uri": "[concat('https://', variables('newStorageAccountNode'), '.blob.core.cloudapi.de/vhd/', variables('namingInfix'), copyIndex(), '-docker-pool.vhd')]"
 						},
 						"createOption": "Empty"
 					}]
