@@ -532,7 +532,8 @@
 				"displayName": "OpenShiftMasterNetworkInterface"
 			},
 			"dependsOn": [
-				"[concat('Microsoft.Network/publicIPAddresses/', parameters('openshiftMasterPublicIpDnsLabelPrefix'))]"
+				"[concat('Microsoft.Network/publicIPAddresses/', parameters('openshiftMasterPublicIpDnsLabelPrefix'))]",
+				"[concat('Microsoft.Network/networkSecurityGroups/', concat(parameters('openshiftMasterHostname'), 'nsg'))]"
 			],
 			"properties": {
 				"ipConfigurations": [{
@@ -546,7 +547,10 @@
 							"id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'), '/subnets/', variables('masterSubnetName'))]"
 						}
 					}
-				}]
+				}],
+				"networkSecurityGroup": {
+					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('openshiftMasterHostname'), 'nsg')]"
+				}
 			}
 		}, {
 			"type": "Microsoft.Compute/virtualMachines",
@@ -604,29 +608,31 @@
 				}
 			}
 		}, {
-			"type": "Microsoft.Compute/virtualMachines/extensions",
-			"name": "[concat(parameters('openshiftMasterHostname'), '/deployOpenShift')]",
-			"location": "[resourceGroup().location]",
-			"apiVersion": "[variables('apiVersionCompute')]",
-			"tags": {
-				"displayName": "PrepMaster"
-			},
-			"dependsOn": [
-				"[concat('Microsoft.Compute/virtualMachines/', parameters('openshiftMasterHostname'))]"
-			],
-			"properties": {
-				"publisher": "Microsoft.OSTCExtensions",
-				"type": "CustomScriptForLinux",
-				"typeHandlerVersion": "1.5",
-				"autoUpgradeMinorVersion": true,
-				"settings": {
-					"fileUris": [
-						"[variables('masterPrepScriptUrl')]"
-					],
-					"commandToExecute": "[concat('sh ', variables('masterPrepScriptFileName'), ' ', parameters('adminUsername'))]"
-				}
-			}
-		}, {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[concat(parameters('openshiftMasterHostname'), 'nsg')]",
+      "tags": {
+        "displayName": "NetworkSecurityGroup"
+      },
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-ssh",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    }, {
 			"type": "Microsoft.Network/networkInterfaces",
 			"name": "[concat(variables('namingInfix'), copyIndex(), 'nic')]",
 			"location": "[resourceGroup().location]",
@@ -635,7 +641,8 @@
 				"displayName": "OpenShiftNodeNetworkInterfaces"
 			},
 			"dependsOn": [
-				"[concat('Microsoft.Network/loadBalancers/', variables('nodeLoadBalancerName'))]"
+				"[concat('Microsoft.Network/loadBalancers/', variables('nodeLoadBalancerName'))]",
+				"[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('namingInfix'), copyIndex(), 'nsg'))]"
 			],
 			"copy": {
 				"name": "nodeNICLoop",
@@ -653,9 +660,42 @@
 							"id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('nodeLoadBalancerName'), '/backendAddressPools/loadBalancerBackEnd')]"
 						}]
 					}
-				}]
+				}],
+				"networkSecurityGroup": {
+					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('namingInfix'), copyIndex(), 'nsg')]"
+				}
 			}
-		}, {
+		},     {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[concat(variables('namingInfix'), copyIndex(), 'nsg')]",
+      "tags": {
+        "displayName": "NetworkSecurityGroup"
+      },
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+	  "copy": {
+				"name": "nodeNICLoop",
+				"count": "[parameters('nodeInstanceCount')]"
+			},
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-ssh",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+	{
 			"type": "Microsoft.Compute/virtualMachines",
 			"name": "[concat(variables('namingInfix'), '-', copyIndex())]",
 			"location": "[resourceGroup().location]",
@@ -715,91 +755,6 @@
 					"networkInterfaces": [{
 						"id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('namingInfix'), copyIndex(), 'nic'))]"
 					}]
-				}
-			}
-		}, {
-			"type": "Microsoft.Compute/virtualMachines/extensions",
-			"name": "[concat(variables('namingInfix'), '-', copyIndex(), '/prepNodes')]",
-			"location": "[resourceGroup().location]",
-			"apiVersion": "[variables('apiVersionCompute')]",
-			"tags": {
-				"displayName": "PrepNodes"
-			},
-			"dependsOn": [
-				"[concat('Microsoft.Compute/virtualMachines/', variables('namingInfix'), '-', copyIndex())]"
-			],
-			"copy": {
-				"name": "nodeScriptLoop",
-				"count": "[parameters('nodeInstanceCount')]"
-			},
-			"properties": {
-				"publisher": "Microsoft.OSTCExtensions",
-				"type": "CustomScriptForLinux",
-				"typeHandlerVersion": "1.5",
-				"autoUpgradeMinorVersion": true,
-				"settings": {
-					"fileUris": [
-						"[variables('nodePrepScriptUrl')]"
-					],
-					"commandToExecute": "[concat('sh ', variables('nodePrepScriptFileName'), ' ', parameters('adminUsername'))]"
-				}
-			}
-		}, {
-			"name": "OpenShiftDeployment",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('apiVersionLinkTemplate')]",
-			"dependsOn": [
-				"[concat('Microsoft.Compute/virtualMachines/', parameters('openshiftMasterHostname'), '/extensions/deployOpenShift')]",
-				"nodeScriptLoop"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('openshiftDeploymentTemplateUrl')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"_artifactsLocation": {
-						"value": "[parameters('_artifactsLocation')]"
-					},
-					"openshiftMasterHostname": {
-						"value": "[parameters('openshiftMasterHostname')]"
-					},
-					"openshiftMasterPublicIpFqdn": {
-						"value": "[reference(parameters('openshiftMasterPublicIpDnsLabelPrefix')).dnsSettings.fqdn]"
-					},
-					"openshiftMasterPublicIpAddress": {
-						"value": "[reference(parameters('openshiftMasterPublicIpDnsLabelPrefix')).ipAddress]"
-					},
-					"nodePrefix": {
-						"value": "[variables('namingInfix')]"
-					},
-					"nodeInstanceCount": {
-						"value": "[parameters('nodeInstanceCount')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('adminUsername')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('adminPassword')]"
-					},
-					"xipioDomain": {
-						"value": "[concat(reference(parameters('nodeLbPublicIpDnsLabelPrefix')).ipAddress, '.xip.io')]"
-					},
-					"customDomain": {
-						"value": "[parameters('defaultSubDomain')]"
-					},
-					"subDomainChosen": {
-						"value": "[concat(parameters('defaultSubDomainType'), 'Domain')]"
-					},
-					"sshPrivateKey": {
-						"reference": {
-							"keyvault": {
-								"id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('keyVaultResourceGroup'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-							},
-							"secretName": "[parameters('keyVaultSecret')]"
-						}
-					}
 				}
 			}
 		}
