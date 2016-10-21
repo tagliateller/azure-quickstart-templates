@@ -665,37 +665,36 @@
 					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('namingInfix'), copyIndex(), 'nsg')]"
 				}
 			}
-		},     {
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[concat(variables('namingInfix'), copyIndex(), 'nsg')]",
-      "tags": {
-        "displayName": "NetworkSecurityGroup"
-      },
-      "apiVersion": "[variables('apiVersion')]",
-      "location": "[resourceGroup().location]",
-	  "copy": {
+		}, {
+			"type": "Microsoft.Network/networkSecurityGroups",
+			"name": "[concat(variables('namingInfix'), copyIndex(), 'nsg')]",
+			"tags": {
+				"displayName": "NetworkSecurityGroup"
+			},
+			"apiVersion": "[variables('apiVersion')]",
+			"location": "[resourceGroup().location]",
+			"copy": {
 				"name": "nodeNICLoop",
 				"count": "[parameters('nodeInstanceCount')]"
 			},
-      "properties": {
-        "securityRules": [
-          {
-            "name": "default-allow-ssh",
-            "properties": {
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1000,
-              "direction": "Inbound"
-            }
-          }
-        ]
-      }
-    },
-	{
+			"properties": {
+				"securityRules": [
+					{
+						"name": "default-allow-ssh",
+						"properties": {
+							"protocol": "Tcp",
+							"sourcePortRange": "*",
+							"destinationPortRange": "22",
+							"sourceAddressPrefix": "*",
+							"destinationAddressPrefix": "*",
+							"access": "Allow",
+							"priority": 1000,
+							"direction": "Inbound"
+						}
+					}
+				]
+			}
+		}, {
 			"type": "Microsoft.Compute/virtualMachines",
 			"name": "[concat(variables('namingInfix'), '-', copyIndex())]",
 			"location": "[resourceGroup().location]",
