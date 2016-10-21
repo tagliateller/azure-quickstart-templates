@@ -617,20 +617,21 @@
 			"location": "[resourceGroup().location]",
 			"properties": {
 				"securityRules": [
-				{
-					"name": "default-allow-ssh",
-					"properties": {
-						"protocol": "Tcp",
-						"sourcePortRange": "*",
-						"destinationPortRange": "22",
-						"sourceAddressPrefix": "*",
-						"destinationAddressPrefix": "*",
-						"access": "Allow",
-						"priority": 1000,
-						"direction": "Inbound"
+					{
+						"name": "default-allow-ssh",
+						"properties": {
+							"protocol": "Tcp",
+							"sourcePortRange": "*",
+							"destinationPortRange": "22",
+							"sourceAddressPrefix": "*",
+							"destinationAddressPrefix": "*",
+							"access": "Allow",
+							"priority": 1000,
+							"direction": "Inbound"
+						}
 					}
-				}
-			]
+				]
+			}
 		}, {
 			"type": "Microsoft.Network/networkInterfaces",
 			"name": "[concat(variables('namingInfix'), copyIndex(), 'nic')]",
