@@ -549,7 +549,7 @@
 					}
 				}],
 				"networkSecurityGroup": {
-					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('openshiftMasterHostname'), 'nsg')]"
+					"id": "[resourceId('Microsoft.Network/networkSecurityGroups/', concat(parameters('openshiftMasterHostname'), 'nsg'))]"
 				}
 			}
 		}, {
@@ -613,7 +613,7 @@
 			"tags": {
 				"displayName": "NetworkSecurityGroup"
 			},
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "[variables('apiVersionNetwork')]",
 			"location": "[resourceGroup().location]",
 			"properties": {
 				"securityRules": [
@@ -662,7 +662,7 @@
 					}
 				}],
 				"networkSecurityGroup": {
-					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('namingInfix'), copyIndex(), 'nsg')]"
+					"id": "[resourceId('Microsoft.Network/networkSecurityGroups/', concat(variables('namingInfix'), copyIndex(), 'nsg')]"
 				}
 			}
 		}, {
@@ -671,7 +671,7 @@
 			"tags": {
 				"displayName": "NetworkSecurityGroup"
 			},
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "[variables('apiVersionNetwork')]",
 			"location": "[resourceGroup().location]",
 			"copy": {
 				"name": "nodeNICLoop",
