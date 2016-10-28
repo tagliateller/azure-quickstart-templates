@@ -607,7 +607,30 @@
 					}]
 				}
 			}
-		}, {
+		},  {
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(parameters('vmName'),'/installcustomscript')]",
+			"apiVersion": "[variables('apiVersion')]",
+			"location": "[resourceGroup().location]",
+			"tags": {
+				"displayName": "VirtualMachineCustomScriptExtension"
+			},
+			"dependsOn": [
+				"[concat('Microsoft.Compute/virtualMachines/', parameters('openshiftMasterHostname'))]"
+			],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.3",
+        "settings": {
+          "fileUris": [
+						"[variables('masterPrepScriptUrl')]"
+					],
+		  "commandToExecute": "[concat('sh ', variables('masterPrepScriptFileName'), ' ', parameters('adminUsername'))]"
+        }
+      }
+    }, 
+		{
 		    "type": "Microsoft.Network/networkSecurityGroups",
 			"name": "[concat(parameters('openshiftMasterHostname'), 'nsg')]",
 			"tags": {
@@ -662,7 +685,7 @@
 					}
 				}],
 				"networkSecurityGroup": {
-					"id": "[resourceId('Microsoft.Network/networkSecurityGroups/', concat(variables('namingInfix'), copyIndex(), 'nsg')]"
+					"id": "[resourceId('Microsoft.Network/networkSecurityGroups/', concat(variables('namingInfix'), copyIndex(), 'nsg'))]"
 				}
 			}
 		}, {
@@ -754,6 +777,93 @@
 					"networkInterfaces": [{
 						"id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('namingInfix'), copyIndex(), 'nic'))]"
 					}]
+				}
+			}
+		},
+		
+		{
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(variables('namingInfix'), '-', copyIndex(), '/prepNodes')]",
+			"location": "[resourceGroup().location]",
+			"apiVersion": "[variables('apiVersionCompute')]",
+			"tags": {
+				"displayName": "PrepNodes"
+			},
+			"dependsOn": [
+				"[concat('Microsoft.Compute/virtualMachines/', variables('namingInfix'), '-', copyIndex())]"
+			],
+			"copy": {
+				"name": "nodeScriptLoop",
+				"count": "[parameters('nodeInstanceCount')]"
+			},
+			"properties": {
+				"publisher": "Microsoft.OSTCExtensions",
+				"type": "CustomScriptForLinux",
+				"typeHandlerVersion": "1.3",
+				"autoUpgradeMinorVersion": true,
+				"settings": {
+					"fileUris": [
+						"[variables('nodePrepScriptUrl')]"
+					],
+					"commandToExecute": "[concat('sh ', variables('nodePrepScriptFileName'), ' ', parameters('adminUsername'))]"
+				}
+			}
+		}, {
+			"name": "OpenShiftDeployment",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[variables('apiVersionLinkTemplate')]",
+			"dependsOn": [
+				"[concat('Microsoft.Compute/virtualMachines/', parameters('openshiftMasterHostname'), '/extensions/deployOpenShift')]",
+				"nodeScriptLoop"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('openshiftDeploymentTemplateUrl')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"_artifactsLocation": {
+						"value": "[parameters('_artifactsLocation')]"
+					},
+					"openshiftMasterHostname": {
+						"value": "[parameters('openshiftMasterHostname')]"
+					},
+					"openshiftMasterPublicIpFqdn": {
+						"value": "[reference(parameters('openshiftMasterPublicIpDnsLabelPrefix')).dnsSettings.fqdn]"
+					},
+					"openshiftMasterPublicIpAddress": {
+						"value": "[reference(parameters('openshiftMasterPublicIpDnsLabelPrefix')).ipAddress]"
+					},
+					"nodePrefix": {
+						"value": "[variables('namingInfix')]"
+					},
+					"nodeInstanceCount": {
+						"value": "[parameters('nodeInstanceCount')]"
+					},
+					"adminUsername": {
+						"value": "[parameters('adminUsername')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('adminPassword')]"
+					},
+					"xipioDomain": {
+						"value": "[concat(reference(parameters('nodeLbPublicIpDnsLabelPrefix')).ipAddress, '.xip.io')]"
+					},
+					"customDomain": {
+						"value": "[parameters('defaultSubDomain')]"
+					},
+					"subDomainChosen": {
+						"value": "[concat(parameters('defaultSubDomainType'), 'Domain')]"
+					},
+					"sshPrivateKey": {
+						"reference": {
+							"keyvault": {
+								"id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('keyVaultResourceGroup'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+							},
+							"secretName": "[parameters('keyVaultSecret')]"
+						}
+					}
 				}
 			}
 		}

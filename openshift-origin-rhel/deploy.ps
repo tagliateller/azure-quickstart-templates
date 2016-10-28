@@ -1,0 +1,5 @@
+Add-AzureRmAccount -EnvironmentName AzureGermanCloud
+
+New-AzureRmResourceGroup -Name origin10 -Location "Germany Central"
+
+New-AzureRmResourceGroupDeployment -Name origindeploy10 -ResourceGroupName origin10 -TemplateFile .\azuredeploy.json –TemplateParameterFile .\azuredeploy.parameters.json
