@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Startmeldung
+echo "nodeprep start" >> ~/start.txt
+
 # Update system to latest packages and install dependencies
 yum -y update
 yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion pyOpenSSL httpd-tools
@@ -24,4 +27,7 @@ docker-storage-setup
 # Enable and start Docker services
 systemctl enable docker
 systemctl start docker
+
+# Fertigmeldung
+echo "nodeprep fertig" >> ~/ready.txt
 
