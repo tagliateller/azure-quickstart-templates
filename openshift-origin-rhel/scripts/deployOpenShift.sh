@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Startmeldung
+echo "deployOpenShift start" >> ~/openshift-start.txt 
+
 set -e
 
 SUDOUSER=$1
@@ -101,3 +104,6 @@ mkdir -p /etc/origin/master
 htpasswd -cb /etc/origin/master/htpasswd ${SUDOUSER} ${PASSWORD}
 
 echo "Script complete"
+
+# Startmeldung
+echo "deployOpenShift ready" >> ~/openshift-ready.txt 
