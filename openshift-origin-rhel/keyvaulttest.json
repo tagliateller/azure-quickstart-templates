@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+	"parameters": {
+		"subscriptionId": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Azure Subscription ID"
+			}
+		},
+		"keyVaultResourceGroup": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Resource Group that contains the Key Vault"
+			}
+		},
+		"keyVaultName": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Name of the Key Vault"
+			}
+		},
+		"keyVaultSecret": {
+			"type": "securestring",
+			"minLength": 1,
+			"metadata": {
+				"description": "Key Vault Secret Name that contains the Private Key"
+			}
+		}
+	},		
+    "outputs": { 
+						"reference": {
+							"keyvault": {
+								"id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('keyVaultResourceGroup'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+							},
+							"secretName": "[parameters('keyVaultSecret')]"
+						}	
+	}
+}

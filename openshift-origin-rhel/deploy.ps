@@ -1,5 +1,31 @@
+Anmeldung
+----------
 Add-AzureRmAccount -EnvironmentName AzureGermanCloud
+
+
+Key anlegen
+-----------
+
+Create KeyVault using Powershell
+a. Create new resource group: New-AzureRMResourceGroup -Name 'keys' -Location 'Germany Central'
+b. Create key vault: New-AzureRmKeyVault -VaultName 'azuredefaultkey' -ResourceGroup 'keys' -Location 'Germany Central'
+c. Create variable with sshPrivateKey: $securesecret = ConvertTo-SecureString -String '[copy ssh Private Key here - including line feeds]' -AsPlainText -Force
+d. Create Secret: Set-AzureKeyVaultSecret -Name 'azuresecret' -SecretValue $securesecret -VaultName 'azuredefaultkey'
+
+Deployment
+----------
 
 New-AzureRmResourceGroup -Name origin10 -Location "Germany Central"
 
 New-AzureRmResourceGroupDeployment -Name origindeploy10 -ResourceGroupName origin10 -TemplateFile .\azuredeploy.json –TemplateParameterFile .\azuredeploy.parameters.json
+
+Freischaltung der keys
+----------------------
+
+Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 'keys' -EnabledForDeployment
+
+oder 
+
+PS C:\Users\Robert> Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 'keys' -EnabledForTe
+mplateDeployment
+

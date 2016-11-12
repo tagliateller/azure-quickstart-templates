@@ -19,12 +19,12 @@ DOMAIN=$( awk 'NR==2' /etc/resolv.conf | awk '{ print $2 }' )
 
 # Generate public / private keys for use by Ansible
 
-echo "Generating keys"
+echo "Generating keys" >> ~/openshift-verlauf.txt
 
 runuser -l $SUDOUSER -c "echo \"$PRIVATEKEY\" > ~/.ssh/id_rsa"
 runuser -l $SUDOUSER -c "chmod 600 ~/.ssh/id_rsa*"
 
-echo "Configuring SSH ControlPath to use shorter path name"
+echo "Configuring SSH ControlPath to use shorter path name" >> ~/openshift-verlauf.txt
 
 sed -i -e "s/^# control_path = %(directory)s\/%%h-%%r/control_path = %(directory)s\/%%h-%%r/" /etc/ansible/ansible.cfg
 sed -i -e "s/^#host_key_checking = False/host_key_checking = False/" /etc/ansible/ansible.cfg
@@ -32,7 +32,7 @@ sed -i -e "s/^#pty=False/pty=False/" /etc/ansible/ansible.cfg
 
 # Create Ansible Hosts File
 
-echo "Generating Ansible hosts file"
+echo "Generating Ansible hosts file" >> ~/openshift-verlauf.txt 
 
 cat > /etc/ansible/hosts <<EOF
 # Create an OSEv3 group that contains the masters and nodes groups
@@ -73,37 +73,37 @@ done
 
 runuser -l $SUDOUSER -c "git clone https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
 
-echo "Executing Ansible playbook"
+echo "Executing Ansible playbook" >> ~/openshift-verlauf.txt
 
-runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml"
+runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml" > ~/openshift-install.log
 
-echo "Modifying sudoers"
+echo "Modifying sudoers" >> ~/openshift-verlauf.txt
 
 sed -i -e "s/Defaults    requiretty/# Defaults    requiretty/" /etc/sudoers
 sed -i -e '/Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"/aDefaults    env_keep += "PATH"' /etc/sudoers
 
 # Deploy Registry and Router
 
-echo "Deploying Registry"
+echo "Deploying Registry" >> ~/openshift-verlauf.txt
 
 # runuser -l $SUDOUSER -c "sudo oadm registry"
 
-echo "Deploying Router"
+echo "Deploying Router" >> ~/openshift-verlauf.txt
 
 # runuser -l $SUDOUSER -c "sudo oadm router osrouter --replicas=$NODECOUNT --selector=region=infra"
 
-echo "Re-enabling requiretty"
+echo "Re-enabling requiretty" >> ~/openshift-verlauf.txt
 
 sed -i -e "s/# Defaults    requiretty/Defaults    requiretty/" /etc/sudoers
 
 # Create OpenShift User
 
-echo "Creating OpenShift User"
+echo "Creating OpenShift User" >> ~/openshift-verlauf.txt
 
 mkdir -p /etc/origin/master
 htpasswd -cb /etc/origin/master/htpasswd ${SUDOUSER} ${PASSWORD}
 
-echo "Script complete"
+echo "Script complete" >> ~/openshift-verlauf.txt
 
 # Startmeldung
 echo "deployOpenShift ready" >> ~/openshift-ready.txt 
