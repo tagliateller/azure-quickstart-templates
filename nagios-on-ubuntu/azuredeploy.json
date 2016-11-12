@@ -240,7 +240,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('https://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/osdisk.vhd')]"
+              "uri": "[concat('https://',parameters('storageAccountName'),'.blob.core.cloudapi.de/',variables('vmStorageAccountContainerName'),'/osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
