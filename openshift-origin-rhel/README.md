@@ -103,7 +103,8 @@ osev3node.germanycentral.cloudapp.microsoftazure.de
 
 # TODO
 
-Port 8443 in masternsg
+* Port 8443 in masternsg
+* Zugriff auf Apps nicht erfolgreich
 
 # Use Cases
 
