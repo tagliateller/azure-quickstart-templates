@@ -94,3 +94,29 @@ This template creates an OpenShift user but does not make it a full OpenShift us
 ### Additional OpenShift Configuration Options
  
 You can configure additional settings per the official [OpenShift Origin Documentation](https://docs.openshift.org/latest/welcome/index.html).
+
+# Aktuell
+
+https://osev3master.germanycentral.cloudapp.microsoftazure.de:8443/console
+ssh azureuser@osev3master.germanycentral.cloudapp.microsoftazure.de
+osev3node.germanycentral.cloudapp.microsoftazure.de
+
+# TODO
+
+Port 8443 in masternsg
+
+# Use Cases
+
+* Demo Applications
+** Ticketmonster Plain
+** Ticketmonster mit MariaDB
+** MLP Parks als Demo Szenario
+** BOA-Portal Plain (https://github.com/tagliateller/furry-octo-memory) - wip
+** BOA-Portal mit Bildern in MongoDB
+
+* Deployment Logging
+* Deployment Metriken
+* Deployment CloudForms
+* Image Transition
+
+

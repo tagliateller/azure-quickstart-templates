@@ -10,7 +10,7 @@ Create KeyVault using Powershell
 a. Create new resource group: New-AzureRMResourceGroup -Name 'keys' -Location 'Germany Central'
 b. Create key vault: New-AzureRmKeyVault -VaultName 'azuredefaultkey' -ResourceGroup 'keys' -Location 'Germany Central'
 c. Create variable with sshPrivateKey: $securesecret = ConvertTo-SecureString -String '[copy ssh Private Key here - including line feeds]' -AsPlainText -Force
-d. Create Secret: Set-AzureKeyVaultSecret -Name 'azuresecret' -SecretValue $securesecret -VaultName 'azuredefaultkey'
+d. Create Secret: Set-AzureKeyVaultSecret -Name 'azuredefaultsecret' -SecretValue $securesecret -VaultName 'azuredefaultkey'
 
 Deployment
 ----------
@@ -28,4 +28,21 @@ oder
 
 PS C:\Users\Robert> Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 'keys' -EnabledForTe
 mplateDeployment
+
+Image Auswahl
+-------------
+
+Get-AzureRmVMImagePublisher -Location "Germany Central"
+Get-AzureRmVMImageOffer -Location "Germany Central" -Publisher "Canonical"
+
+Get-AzureRmVMImageSku -Location "Germany Central" -Offer "UbuntuServer" -PublisherName "Canonical"
+
+Skus        Offer        PublisherName Location       Id
+----        -----        ------------- --------       --
+12.04.5-LTS UbuntuServer Canonical     GermanyCentral /Subscriptions/aa001ed1-efe3-49c7-b916-93a7216b6a5f/Providers/...
+14.04.4-LTS UbuntuServer Canonical     GermanyCentral /Subscriptions/aa001ed1-efe3-49c7-b916-93a7216b6a5f/Providers/...
+14.04.5-LTS UbuntuServer Canonical     GermanyCentral /Subscriptions/aa001ed1-efe3-49c7-b916-93a7216b6a5f/Providers/...
+16.04.0-LTS UbuntuServer Canonical     GermanyCentral /Subscriptions/aa001ed1-efe3-49c7-b916-93a7216b6a5f/Providers/...
+
+
 

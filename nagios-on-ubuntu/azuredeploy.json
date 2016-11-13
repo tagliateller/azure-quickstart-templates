@@ -72,12 +72,12 @@
   "variables": {
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
-    "imageSKU": "14.04.2-LTS",
+    "imageSKU": "14.04.4-LTS",
     "vmStorageAccountContainerName": "vhd",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "computerNamePrefix": "NagiosCoreSrv",
-    "scriptUrl": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/nagios-on-ubuntu/",
+    "scriptUrl": "https://raw.githubusercontent.com/tagliateller/azure-quickstart-templates/master/nagios-on-ubuntu/",
     "tshirtSizeSmall": {
       "numberOfInstances": 1,
       "vmSize": "Standard_A1"
@@ -88,7 +88,7 @@
     },
     "tshirtSizeLarge": {
       "numberOfInstances": 1,
-      "vmSize": "Standard_D2"
+      "vmSize": "Standard_DS2_v2"
     },
     "tshirtSizeXLarge": {
       "numberOfInstances": 1,
@@ -269,10 +269,9 @@
         "[concat('Microsoft.Network/networkInterfaces/', 'nic', copyindex())]"
       ],
       "properties": {
-        "publisher": "Microsoft.Azure.Extensions",
-        "type": "CustomScript",
-        "typeHandlerVersion": "2.0",
-        "autoUpgradeMinorVersion": true,
+        "publisher": "Microsoft.OSTCExtensions",
+		"type": "CustomScriptForLinux",
+		"typeHandlerVersion": "1.3",
         "settings": {
           "fileUris": [
             "[concat(variables('scriptUrl'), 'nagios-core-install.sh')]"
