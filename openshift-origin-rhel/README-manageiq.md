@@ -83,3 +83,9 @@ Add-AzureRmVMSshPublicKey -VM $VirtualMachine -Path “/home/$VMUserName/.ssh/au
 
 # Create the VM
 New-AzureRmVM -ResourceGroupName $ResourceGroupName -Location $Location -VM $VirtualMachine
+
+# TODO
+
+https://docs.microsoft.com/de-de/azure/virtual-machines/virtual-machines-windows-classic-createupload-vhd?toc=%2fazure%2fvirtual-machines%2fwindows%2fclassic%2ftoc.json#schritt-3-hochladen-der-vhd-datei
+
+
