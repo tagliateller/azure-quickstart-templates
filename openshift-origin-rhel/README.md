@@ -104,20 +104,24 @@ osev3node.germanycentral.cloudapp.microsoftazure.de
 # TODO
 
 * Port 8443 in masternsg
-* Zugriff auf Apps nicht erfolgreich
+* Port 80 und 443 in nodensg
 
 # Use Cases
 
 * Demo Applications
 ** Ticketmonster Plain
 ** Ticketmonster mit MariaDB
+*** TODO !!!!!
 ** MLP Parks als Demo Szenario
+*** https://github.com/tagliateller/openshift3mlbparks ohne weitere Anpassungen: oc start-build bc/mlbparks erforderlich !! OK
+*** entsprechend Roadshow: 	
 ** BOA-Portal Plain (https://github.com/tagliateller/furry-octo-memory) - wip
 ** BOA-Portal mit Bildern in MongoDB
 
 * Deployment Logging
 * Deployment Metriken
 * Deployment CloudForms
+** http://manageiq.org/docs/reference/latest/doc-Installing_on_Microsoft_Azure/miq/
 * Image Transition
 
 
