@@ -67,7 +67,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountNamePrefix'),'1.blob.core.windows.net/vhds/',parameters('spVMName'),'-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('storageAccountNamePrefix'),'1.blob.core.cloudapi.de/vhds/',parameters('spVMName'),'-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -75,7 +75,7 @@
           "dataDisks": [
             {
               "vhd": {
-                "uri": "[concat('http://',parameters('storageAccountNamePrefix'),'1.blob.core.windows.net/vhds/',parameters('spVMName'),'-', parameters('spDataDisk'),'-1.vhd')]"
+                "uri": "[concat('http://',parameters('storageAccountNamePrefix'),'1.blob.core.cloudapi.de/vhds/',parameters('spVMName'),'-', parameters('spDataDisk'),'-1.vhd')]"
               },
               "name": "[concat(parameters('spVMName'),'-data-disk1')]",
               "createOption": "empty",
@@ -95,7 +95,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "true",
-            "storageUri": "[concat('http://',parameters('storageAccountNamePrefix'),'2.blob.core.windows.net')]"
+            "storageUri": "[concat('http://',parameters('storageAccountNamePrefix'),'2.blob.core.cloudapi.de')]"
           }
         }
       }
@@ -111,8 +111,8 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.13",
-        "autoUpgradeMinorVersion": false,
+        "typeHandlerVersion": "2.17",
+        "autoUpgradeMinorVersion": true,
         "settings": {
           "ModulesUrl": "[parameters('spPrepareModulesURL')]",
           "wmfVersion": "4.0",

@@ -4,8 +4,7 @@ apprenda60-small/provisionApprendaTestScript.ps1
 apprenda60-express/provisionApprendaTestScript.ps1
 
 # local template parameters
-elasticsearch/azuredeploy.parameters.local.*
-elasticsearch-jmeter/azuredeploy.parameters.local.*
+azuredeploy.parameters.local.*
 
 # emacs autosaves
 auto-save-list
@@ -21,5 +20,14 @@ org-mode-config.el
 .DS_Store
 org-clock-save.el
 emacs-config.el
+
 log
-.vscode/settings.json
+
+openshift-origin-rhel/azuredeploy.parameters.json
+201-key-vault-secret-create/azuredeploy.parameters.json
+101-vm-simple-linux/azuredeploy.parameters.json
+multi-vm-chef-template-ubuntu-vm/azuredeploy.parameters.json
+gluster-file-system/azuredeploy.parameters.json
+
+.vscode
+node_modules
