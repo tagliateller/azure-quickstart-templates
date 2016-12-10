@@ -25,3 +25,5 @@ openshift-origin-rhel/azuredeploy.parameters.json
 201-key-vault-secret-create/azuredeploy.parameters.json
 .vscode
 node_modules
+
+manageiq-install.ps
