@@ -21,8 +21,14 @@ org-mode-config.el
 org-clock-save.el
 emacs-config.el
 
+log
+
 openshift-origin-rhel/azuredeploy.parameters.json
 201-key-vault-secret-create/azuredeploy.parameters.json
+101-vm-simple-linux/azuredeploy.parameters.json
+multi-vm-chef-template-ubuntu-vm/azuredeploy.parameters.json
+gluster-file-system/azuredeploy.parameters.json
+
 .vscode
 node_modules
 

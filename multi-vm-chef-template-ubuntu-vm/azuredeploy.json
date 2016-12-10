@@ -102,19 +102,18 @@
   "variables": {
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "vmExtensionName": "LinuxChefExtension",
     "vmName": "[parameters('vmDnsName')]",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "chefPublicIP",
+    "publicIPAddressName": "demov3publicip",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "virtualNetworkName": "MyVNET",
+    "virtualNetworkName": "demov3virtnet",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "subnet-1",
     "subnet2Name": "subnet-2",
     "subnet1Prefix": "10.0.0.0/24",
     "subnet2Prefix": "10.0.1.0/24",
-    "nicName": "myVMNic",
+    "nicName": "demov3nic",
     "dnsName": "[variables('subnet1Name')]"
   },
   "resources": [
@@ -197,7 +196,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName')),copyIndex())]"
               },
               "subnet": {
                 "id": "[variables('subnet1Ref')]"

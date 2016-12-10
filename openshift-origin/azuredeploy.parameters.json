@@ -1,0 +1,30 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "newStorageAccountName": {
+      "value": "demov3storage"
+    },
+    "adminUsername": {
+      "value": "azureuser"
+    },
+    "dnsNameForPublicIPMaster": {
+      "value": "demov3-master"
+    },
+    "dnsNameForPublicIPNode1": {
+      "value": "demov3-node1"
+    },
+    "dnsNameForPublicIPNode2": {
+      "value": "demov3-node2"
+    },
+    "dnsNameForPublicIPBind": {
+      "value": "demov3-bind"
+    },
+    "centosOSVersion": {
+      "value": "7.1"
+    },
+    "sshKeyData": {
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCypfz5gbpODwKRqdpsOGPuN2dXsFHjAGhaeuBgBbufGLR0AxSow2HooZdRjumu451XJ1+Fnu+mo7bfgWfhVqxFyYWsPzxMYwWS1Yy3C9UeKGc7xm1BT6qkX5MfIYxUPk9lJrK7bIeArAjjs7XguVY9Bc3b+5VC4uuuxCCgwdL7fQeHryho1/bx+MJRBlloW31q1Vopg13Y/534X3QySOOAEH9wowvbSGEYqnaqZksJtECIZ2hmPbVqJkXJ1cn7aQhp49GEevkSLKTnNUM6XDDLn24VJ5Qmqs7EtLq1O5xCFTJE5mN5bQbx567r9Era2DlVMjObeB8/cY8BLaCXO8rh ec2-user@ec2-52-23-234-199.compute-1.amazonaws.com"
+    }    
+  }
+}
