@@ -45,8 +45,8 @@ nodes
 ansible_ssh_user=$SUDOUSER
 ansible_become=yes
 deployment_type=origin
-openshift_release=v1.3
-openshift_image_tag=v1.3.0
+openshift_release=v1.4
+openshift_image_tag=v1.4.0
 docker_udev_workaround=True
 openshift_use_dnsmasq=no
 openshift_master_default_subdomain=$ROUTING
@@ -71,7 +71,7 @@ do
   echo "$NODEPREFIX-$c.$DOMAIN openshift_node_labels=\"{'region': 'infra', 'zone': 'default'}\"" >> /etc/ansible/hosts
 done
 
-runuser -l $SUDOUSER -c "git clone https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
+runuser -l $SUDOUSER -c "git clone https://github.com/tagliateller/openshift-ansible /home/$SUDOUSER/openshift-ansible"
 
 echo "Executing Ansible playbook" >> ~/openshift-verlauf.txt
 
