@@ -653,7 +653,20 @@
 							"priority": 1000,
 							"direction": "Inbound"
 						}
-					}
+					},
+					{
+						"name": "default-allow-https",
+						"properties": {
+							"protocol": "Tcp",
+							"sourcePortRange": "*",
+							"destinationPortRange": "8443",
+							"sourceAddressPrefix": "*",
+							"destinationAddressPrefix": "*",
+							"access": "Allow",
+							"priority": 1010,
+							"direction": "Inbound"
+						}
+					}					
 				]
 			}
 		}, {
@@ -715,7 +728,33 @@
 							"priority": 1000,
 							"direction": "Inbound"
 						}
-					}
+					},
+					{
+						"name": "default-allow-http",
+						"properties": {
+							"protocol": "Tcp",
+							"sourcePortRange": "*",
+							"destinationPortRange": "443",
+							"sourceAddressPrefix": "*",
+							"destinationAddressPrefix": "*",
+							"access": "Allow",
+							"priority": 1010,
+							"direction": "Inbound"
+						}
+					},
+					{
+						"name": "default-allow-https",
+						"properties": {
+							"protocol": "Tcp",
+							"sourcePortRange": "*",
+							"destinationPortRange": "80",
+							"sourceAddressPrefix": "*",
+							"destinationAddressPrefix": "*",
+							"access": "Allow",
+							"priority": 1020,
+							"direction": "Inbound"
+						}
+					}					
 				]
 			}
 		}, {

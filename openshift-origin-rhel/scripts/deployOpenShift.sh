@@ -45,8 +45,8 @@ nodes
 ansible_ssh_user=$SUDOUSER
 ansible_become=yes
 deployment_type=origin
-openshift_release=v1.4
-openshift_image_tag=v1.4.0
+#openshift_release=v1.4
+#openshift_image_tag=v1.4.0
 docker_udev_workaround=True
 openshift_use_dnsmasq=no
 openshift_master_default_subdomain=$ROUTING
@@ -56,6 +56,8 @@ openshift_master_cluster_public_vip=$MASTERPUBLICIPADDRESS
 
 # Enable htpasswd auth for username / password authentication
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+
+openshift_hosted_metrics_deploy=true
 
 # host group for masters
 [masters]
