@@ -92,7 +92,12 @@ TODO: https://github.com/openshift/origin-metrics
 DNS:
 
 dig @$OPENSHIFT_MASTER +short kubernetes.default.svc.cluster.local
-dig master.rfqyi4rngtludat0wuchmaqu5g.ax.internal.azurecloudapp.de +short kubernetes.default.svc.cluster.local
+dig @master.rfqyi4rngtludat0wuchmaqu5g.ax.internal.azurecloudapp.de +short kubernetes.default.svc.cluster.local
+
+[azureuser@master ~]$ sudo cat /var/log/messages | grep DNS
+Dec 11 10:42:02 master origin-master: W1211 10:42:02.764559   52524 run_components.go:210] Could not start DNS: listen tcp4 0.0.0.0:53: bind: address already in use
+[azureuser@master ~]$
+
 
 
 ## Backup
