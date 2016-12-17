@@ -45,8 +45,8 @@ nodes
 ansible_ssh_user=$SUDOUSER
 ansible_become=yes
 deployment_type=origin
-#openshift_release=v1.4
-#openshift_image_tag=v1.4.0
+openshift_release=v1.3
+openshift_image_tag=v1.3.2
 docker_udev_workaround=True
 openshift_use_dnsmasq=false
 openshift_master_default_subdomain=$ROUTING
