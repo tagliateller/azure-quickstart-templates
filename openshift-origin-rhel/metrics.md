@@ -163,9 +163,11 @@ PREFLIGHT CHECK FAILED
 
 Warum kubernetes.default.svc ? Warum nicht kubernetes.default.svc.cluster.local ??
 
- 
- 
+Reparatur DNS mit Stop dnsmasq und restart master -> dann kann kubernetes.default.svc.cluster.local aufgelöst werden
 
+oc new-app --as=system:serviceaccount:openshift-infra:metrics-deployer -f /home/azureuser/openshift-ansible/roles/openshift_hosted_templates/files/v1.3/origin/metrics-deployer.yaml -p HAWKULAR_METRICS_HOSTNAME=metrics.tagliateller.nu -p MASTER_URL=https://kubernetes.default.svc.cluster.local:443
+
+resolver (resolv.conf) prüfen, ping und curl gehen so nicht
 ## Backup
 
 master:
