@@ -48,7 +48,7 @@ deployment_type=origin
 openshift_release=v1.3
 openshift_image_tag=v1.3.2
 docker_udev_workaround=True
-openshift_use_dnsmasq=false
+#openshift_use_dnsmasq=false
 openshift_master_default_subdomain=$ROUTING
 
 openshift_master_cluster_public_hostname=$MASTERPUBLICIPHOSTNAME
