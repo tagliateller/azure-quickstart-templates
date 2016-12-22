@@ -135,3 +135,8 @@ oc sa get-token -n management-infra management-admin
 
 * muss dem Provider zugeordnet werden
 * 
+
+# Einrichtung OpenShift Provider unter 
+
+Compute -> Containers -> Provider
+- Master-URL ablegen

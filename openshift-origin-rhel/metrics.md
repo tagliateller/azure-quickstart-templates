@@ -174,6 +174,22 @@ ggf. einen eigenen Bind aufsetzen
 
 zunächst mit dnsmasq=true versuchen
 
+OK - so geht es 
+
+[azureuser@master ~]$ oc get pods
+NAME                         READY     STATUS      RESTARTS   AGE
+hawkular-cassandra-1-eu0wk   1/1       Running     0          1d
+hawkular-metrics-sqcn2       1/1       Running     0          1d
+heapster-r9tgr               1/1       Running     0          1d
+metrics-deployer-w5fo6       0/1       Completed   0          1d
+[azureuser@master ~]$
+
+wie kann metrics angesprochen werden ?
+
+https://hawkular-metrics.apps.tagliateller.nu -> nur statusanzeige
+
+wo sehe ich die metrics ?
+
 ## Backup
 
 master:
