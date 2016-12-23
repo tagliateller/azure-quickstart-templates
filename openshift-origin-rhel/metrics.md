@@ -189,7 +189,31 @@ wie kann metrics angesprochen werden ?
 https://hawkular-metrics.apps.tagliateller.nu -> nur statusanzeige
 
 wo sehe ich die metrics ?
+--> nur in der Console oder in CloudForms / ManageIQ
+in Cloudforms / ManageIQ kann in Chargeback der Provider ausgewählt werden, das geht auch mit Containern
+Frage: Wie kann man einen Chargeback-Report in CloudForms / ManageIQ erstellen ?
 
+# Zugriff auf Hawkular Metrics
+
+#curl -u azureuser -kv -H "X-CSRF-TOKEN: xxx" 'https://osev3master.germanycentral.cloudapp.microsoftazure.de:8443/oauth/authorize?client_id=openshift-challenging-client&response_type=token'
+#curl -L -k -H "X-Remote-User: azureuser" https://osev3master.germanycentral.cloudapp.microsoftazure.de:8443/oauth/token/request
+#curl -k -v -H 'X-Csrf-Token: 1' 'https://osev3master.germanycentral.cloudapp.microsoftazure.de:8443/oauth/authorize?client_id=openshift-challenging-client&response_type=token'   
+#curl -k -v -H 'X-Csrf-Token: 1' '<redirected challengeURL from step 3 +query>'
+#curl -k -v -u azureuser:<your_password> -H 'X-Csrf-Token: 1' '<redirected_challengeURL_from_step_3 +query>'
+
+OK: 
+curl -u azureuser:XXXXX -k -v -H 'X-Csrf-Token: 1' 'https://osev3master.germanycentral.cloudapp.microsoftazure.de:8443/oauth/authorize?client_id=openshift-challenging-client&response_type=token'
+(nach https://docs.openshift.org/latest/install_config/configuring_authentication.html#token-options)
+
+FAILED:
+
+$ curl -k --header "Authorization: Bearer XXXXX" https://hawkular-metrics.apps.tagliateller.nu/hawkular/metrics/tenants
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    76  100    76    0     0    180      0 --:--:-- --:--:-- --:--:--   186<html><head><title>Error</title></head><body>400 - Bad Request</body></html>
+
+Robert@LAPTOP-JMEHTUQA MINGW64 ~
+$
 ## Backup
 
 master:
