@@ -205,6 +205,9 @@ OK:
 curl -u azureuser:XXXXX -k -v -H 'X-Csrf-Token: 1' 'https://osev3master.germanycentral.cloudapp.microsoftazure.de:8443/oauth/authorize?client_id=openshift-challenging-client&response_type=token'
 (nach https://docs.openshift.org/latest/install_config/configuring_authentication.html#token-options)
 
+https://docs.openshift.org/latest/install_config/cluster_metrics.html#cluster-metrics-accessing-hawkular-metrics-directly
+http://www.hawkular.org/docs/rest/rest-metrics.html#GET__tenants
+
 FAILED:
 
 $ curl -k --header "Authorization: Bearer XXXXX" https://hawkular-metrics.apps.tagliateller.nu/hawkular/metrics/tenants
