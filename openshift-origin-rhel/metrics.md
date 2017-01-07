@@ -217,6 +217,30 @@ $ curl -k --header "Authorization: Bearer XXXXX" https://hawkular-metrics.apps.t
 
 Robert@LAPTOP-JMEHTUQA MINGW64 ~
 $
+
+Diese Abfrage geht:
+
+ curl -k -X GET https://hawkular-metrics.apps.tagliateller.nu/hawkular/metrics/metrics -H "Content-Type: application/json" -H "Hawkular-Tenant: tm3" -H "Authorization: Bearer UA_R-7AsP0YfJNZUGPw7g_Yt7fM4iEWwaGyPb-SpnnU"
+ 
+ Beachte: http://www.hawkular.org/blog/2016/10/24/hawkular-metrics-openshift-and-grafana.html
+
+## Liste der Tenants
+ 
+SO geht es auch - es muss offensichtlich ein gültiger Tenant angegeben werden
+
+$ curl -k -X GET https://hawkular-metrics.apps.tagliateller.nu/hawkular/metrics/tenants -H "Content-Type: application/json" -H "Hawkular-Tenant: tm2" -H "Authorization: Bearer UA_R-7AsP0YfJNZUGPw7g_Yt7fM4iEWwaGyPb-SpnnU"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   180  100   180    0     0     26      0  0:00:06  0:00:06 --:--:--    52[{"id":"default"},{"id":"tm3"},{"id":"mlbparksroadshow"},{"id":"openshift-infra"},{"id":"tm4"},{"id":"management-infra"},{"id":"mlbparks1"},{"id":"ticketmonster"},{"id":"_system"}]
+
+Robert@LAPTOP-JMEHTUQA MINGW64 ~
+$
+
+TODO: Metriken für CPU und Speicherverbrauch / Zeiteinheit ermitteln
+
+Siehe auch : 
+https://github.com/openshift/origin-metrics/blob/master/docs/hawkular_metrics.adoc
+
 ## Backup
 
 master:
