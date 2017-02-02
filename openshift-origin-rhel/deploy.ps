@@ -12,6 +12,14 @@ b. Create key vault: New-AzureRmKeyVault -VaultName 'azuredefaultkey' -ResourceG
 c. Create variable with sshPrivateKey: $securesecret = ConvertTo-SecureString -String '[copy ssh Private Key here - including line feeds]' -AsPlainText -Force
 d. Create Secret: Set-AzureKeyVaultSecret -Name 'azuredefaultsecret' -SecretValue $securesecret -VaultName 'azuredefaultkey'
 
+Create KeyVault using Powershell (East US)
+a. Create new resource group: New-AzureRMResourceGroup -Name 'keys' -Location 'East US'
+b. Create key vault: New-AzureRmKeyVault -VaultName 'azuredefaultkey' -ResourceGroup 'keys' -Location 'East US' -EnabledForDeployment -EnabledForDiskEncryption -EnabledForTemplateDeployment
+                     Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 'keys' -EnabledForTemplateDeployment
+Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' -UserPrincipalName 'azureitdzpaas@online.de' -PermissionsToKeys all -PermissionsToSecrets all
+c. Create variable with sshPrivateKey: $securesecret = ConvertTo-SecureString -String '[copy ssh Private Key here - including line feeds]' -AsPlainText -Force
+d. Create Secret: Set-AzureKeyVaultSecret -Name 'azuredefaultsecret' -SecretValue $securesecret -VaultName 'azuredefaultkey'
+
 Deployment
 ----------
 
@@ -26,8 +34,7 @@ Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 
 
 oder 
 
-PS C:\Users\Robert> Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 'keys' -EnabledForTe
-mplateDeployment
+PS C:\Users\Robert> Set-AzureRmKeyVaultAccessPolicy -VaultName 'azuredefaultkey' –ResourceGroupName 'keys' -EnabledForTemplateDeployment
 
 Image Auswahl
 -------------
