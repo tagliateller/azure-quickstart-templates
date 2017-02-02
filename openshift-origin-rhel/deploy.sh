@@ -1,6 +1,10 @@
 # Login
 azure login
 
+# Key Vault
+azure group create -n keys -l "East US"
+azure keyvault create -u defaultkeyvault -g keys -l 'East US'
+
 # Resource Mode
 azure config mode arm
 
