@@ -75,37 +75,37 @@ done
 
 runuser -l $SUDOUSER -c "git clone https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
 
-echo "Executing Ansible playbook" >> ~/openshift-verlauf.txt
+#echo "Executing Ansible playbook" >> ~/openshift-verlauf.txt
 
-runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml" > ~/openshift-install.log
+#runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml" > ~/openshift-install.log
 
-echo "Modifying sudoers" >> ~/openshift-verlauf.txt
+#echo "Modifying sudoers" >> ~/openshift-verlauf.txt
 
-sed -i -e "s/Defaults    requiretty/# Defaults    requiretty/" /etc/sudoers
-sed -i -e '/Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"/aDefaults    env_keep += "PATH"' /etc/sudoers
+#sed -i -e "s/Defaults    requiretty/# Defaults    requiretty/" /etc/sudoers
+#sed -i -e '/Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"/aDefaults    env_keep += "PATH"' /etc/sudoers
 
 # Deploy Registry and Router
 
-echo "Deploying Registry" >> ~/openshift-verlauf.txt
+#echo "Deploying Registry" >> ~/openshift-verlauf.txt
 
 # runuser -l $SUDOUSER -c "sudo oadm registry"
 
-echo "Deploying Router" >> ~/openshift-verlauf.txt
+#echo "Deploying Router" >> ~/openshift-verlauf.txt
 
 # runuser -l $SUDOUSER -c "sudo oadm router osrouter --replicas=$NODECOUNT --selector=region=infra"
 
-echo "Re-enabling requiretty" >> ~/openshift-verlauf.txt
+#echo "Re-enabling requiretty" >> ~/openshift-verlauf.txt
 
-sed -i -e "s/# Defaults    requiretty/Defaults    requiretty/" /etc/sudoers
+#sed -i -e "s/# Defaults    requiretty/Defaults    requiretty/" /etc/sudoers
 
 # Create OpenShift User
 
-echo "Creating OpenShift User" >> ~/openshift-verlauf.txt
+#echo "Creating OpenShift User" >> ~/openshift-verlauf.txt
 
-mkdir -p /etc/origin/master
-htpasswd -cb /etc/origin/master/htpasswd ${SUDOUSER} ${PASSWORD}
+#mkdir -p /etc/origin/master
+#htpasswd -cb /etc/origin/master/htpasswd ${SUDOUSER} ${PASSWORD}
 
 echo "Script complete" >> ~/openshift-verlauf.txt
 
-# Startmeldung
+# Endemeldung
 echo "deployOpenShift ready" >> ~/openshift-ready.txt 
