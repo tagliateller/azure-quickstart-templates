@@ -186,13 +186,13 @@
 		"centos": { 
 			"publisher": "Openlogic", 
 			"offer": "CentOS", 
-			"sku": "7.2", 
+			"sku": "7.3", 
 			"version": "latest" 
 		}, 
 		"rhel": {
 			"publisher": "RedHat",
 			"offer": "RHEL",
-			"sku": "7.2",
+			"sku": "7.3",
 			"version": "latest"
 		},
 		"imageReference": "[variables(parameters('osImage'))]",
@@ -533,8 +533,9 @@
 				"displayName": "OpenShiftMasterNetworkInterface"
 			},
 			"dependsOn": [
-				"[concat('Microsoft.Network/publicIPAddresses/', parameters('openshiftMasterPublicIpDnsLabelPrefix'))]",
 				"[concat('Microsoft.Network/networkSecurityGroups/', concat(parameters('openshiftMasterHostname'), 'nsg'))]"
+				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+				"[concat('Microsoft.Network/publicIPAddresses/', parameters('openshiftMasterPublicIpDnsLabelPrefix'))]"
 			],
 			"properties": {
 				"ipConfigurations": [{
@@ -680,6 +681,7 @@
 			"dependsOn": [
 				"[concat('Microsoft.Network/loadBalancers/', variables('nodeLoadBalancerName'))]",
 				"[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('namingInfix'), copyIndex(), 'nsg'))]"
+				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
 			],
 			"copy": {
 				"name": "nodeNICLoop",
